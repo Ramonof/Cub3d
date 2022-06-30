@@ -66,4 +66,4 @@ re: fclean all
 
 -include $(OBJS_D)
 
-.PHONY: libft all clean fclean re
+.PHONY: mlx libft all clean fclean re

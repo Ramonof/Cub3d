@@ -17,8 +17,8 @@ void render(t_app *app)
 		double sideDistY;
 
 		double deltaDistX = (rayDirX == 0) ? 1e30 : fabs(1 / rayDirX);
-      	double deltaDistY = (rayDirY == 0) ? 1e30 : fabs(1 / rayDirY);
-      	double perpWallDist;
+	  	double deltaDistY = (rayDirY == 0) ? 1e30 : fabs(1 / rayDirY);
+	  	double perpWallDist;
 
 		int stepX;
 		int stepY;

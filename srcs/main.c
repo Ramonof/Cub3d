@@ -6,7 +6,7 @@
 /*   By: etobias <etobias@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 00:11:55 by mrolande          #+#    #+#             */
-/*   Updated: 2022/07/01 15:07:03 by etobias          ###   ########.fr       */
+/*   Updated: 2022/07/01 15:57:32 by etobias          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,8 @@ void	mlx_test(void)
 	app.player.planeX = 0;
 	app.player.planeY = -0.66;
 
+	app.prev_mouse_x = -1;
+	
 	render(&app);
 
 	setup_controls(&app);
@@ -78,7 +80,8 @@ void	mlx_test(void)
 
 static void	setup_controls(t_app *app)
 {
-	mlx_key_hook(app->mlx_win, keyboard_input, app);
+	mlx_hook(app->mlx_win, 2, 1L<<0, keyboard_input, app);
+	mlx_hook(app->mlx_win, 6, 1L<<6, mouse_move, app);
 }
 
 void	gnl_test(void)

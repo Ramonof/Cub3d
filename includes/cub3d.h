@@ -61,5 +61,6 @@ int 	mouse_move(int x, int y, t_app *app);
 
 /* utils.c */
 double  fclamp(double value, double min, double max);
+int	close_app(t_app *app);
 
 #endif

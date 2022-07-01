@@ -23,10 +23,7 @@ int	keyboard_input(int keycode, t_app *app)
 		app->player.posY -= app->player.dirY * SPEED;
 	}
 	else if (keycode == ESC_KEY)
-	{
-		mlx_destroy_window(app->mlx, app->mlx_win);
-		exit(1);
-	}
+		close_app(app);
 	app->player.posX = fclamp(app->player.posX, 0, 23);
 	app->player.posY = fclamp(app->player.posY, 0, 23);
 	render(app);

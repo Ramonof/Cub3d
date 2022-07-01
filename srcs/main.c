@@ -6,7 +6,7 @@
 /*   By: etobias <etobias@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 00:11:55 by mrolande          #+#    #+#             */
-/*   Updated: 2022/07/01 15:57:32 by etobias          ###   ########.fr       */
+/*   Updated: 2022/07/02 00:09:13 by etobias          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,7 @@ static void	setup_controls(t_app *app)
 {
 	mlx_hook(app->mlx_win, 2, 1L<<0, keyboard_input, app);
 	mlx_hook(app->mlx_win, 6, 1L<<6, mouse_move, app);
+	mlx_hook(app->mlx_win, 17, 0L, close_app, app);
 }
 
 void	gnl_test(void)

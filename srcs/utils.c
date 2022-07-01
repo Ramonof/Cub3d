@@ -8,3 +8,9 @@ double  fclamp(double value, double min, double max)
 		return max;
 	return value;
 }
+
+int	close_app(t_app *app)
+{
+	mlx_destroy_window(app->mlx, app->mlx_win);
+	exit(1);
+}

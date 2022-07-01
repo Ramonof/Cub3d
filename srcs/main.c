@@ -3,18 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mrolande <mrolande@student.21-school.ru    +#+  +:+       +#+        */
+/*   By: etobias <etobias@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 00:11:55 by mrolande          #+#    #+#             */
-/*   Updated: 2022/07/01 00:11:55 by mrolande         ###   ########.fr       */
+/*   Updated: 2022/07/01 12:52:23 by etobias          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <fcntl.h>
-#include "get_next_line.h"
-#include "../libft/libft.h"
-
-#include <mlx.h>
+#include "cub3d.h"
 
 typedef struct	s_data {
 	void	*img;
@@ -39,11 +35,16 @@ void	mlx_test(void)
 	t_data	img;
 
 	mlx = mlx_init();
-	mlx_win = mlx_new_window(mlx, 1920, 1080, "Hello world!");
-	img.img = mlx_new_image(mlx, 1920, 1080);
+	mlx_win = mlx_new_window(mlx, WIDTH, HEIGHT, "Hello world!");
+	img.img = mlx_new_image(mlx, WIDTH, HEIGHT);
 	img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length,
 								&img.endian);
-	my_mlx_pixel_put(&img, 5, 5, 0x00FF0000);
+
+	for (int i = 0; i < 50; i++) {
+		for (int j = 0; j < 50; j++)
+			my_mlx_pixel_put(&img, j, i, 0x00FF0000);
+	}
+
 	mlx_put_image_to_window(mlx, mlx_win, img.img, 0, 0);
 	mlx_loop(mlx);
 }

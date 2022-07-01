@@ -27,6 +27,21 @@ typedef struct	s_data {
 	int		endian;
 }	t_data;
 
+typedef struct	s_color {
+	int	r;
+	int	g;
+	int	b;
+}	t_color;
+
+typedef struct	s_textures {
+	char	*no;
+	char	*so;
+	char	*we;
+	char	*ea;
+	t_color	f;
+	t_color	c;
+}	t_textures;
+
 typedef struct s_player
 {
 	double posX;	// X position
@@ -47,7 +62,7 @@ typedef struct s_app
 }	t_app;
 
 /* render.c */
-void render(t_app *app);
+void	render(t_app *app);
 
 /* graphics_utils.c */
 void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
@@ -57,5 +72,16 @@ int		keyboard_input(int keycode, t_app *app);
 
 /* utils.c */
 double  fclamp(double value, double min, double max);
+
+/* errors.c*/
+void	error_exit(char *err);
+
+/* textures_utils.c */
+void	print_textures_data(t_textures *textures);
+void	free_textures_data(t_textures *textures);
+void	init_textures(t_textures *textures);
+
+/* parser.c */
+void	start_parse(char *map_name, t_textures *textures);
 
 #endif

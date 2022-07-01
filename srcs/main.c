@@ -81,31 +81,24 @@ static void	setup_controls(t_app *app)
 	mlx_key_hook(app->mlx_win, keyboard_input, app);
 }
 
-void	gnl_test(void)
-{
-	int		fd, code = 1, hld;
-	char	*line;
-
-	fd = open("README.md", O_RDONLY);
-	while (code)
-	{
-		code = get_next_line(fd, &line, 0);
-		if (*line)
-		{
-			hld = write(1, line, ft_strlen(line));
-			hld = write(1, "\n", 1);
-		}
-		free(line);
-	}
-	close(fd);
-	hld--;
-}
-
 int	main(int argc, char **argv)
 {
+	t_textures	textures;
+
 	if (argc || argv)
 		argc = write(1, *argv, ft_strlen(*argv));
-	gnl_test();
+	ft_putendl_fd(" start", 1);
+
+	/*mlx*/
 	mlx_test();
+	/**/
+
+	/*parse*/
+	init_textures(&textures);
+	start_parse("test_map1.cub", &textures);
+	print_textures_data(&textures);
+	free_textures_data(&textures);
+	/**/
+
 	return (0);
 }

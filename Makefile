@@ -6,7 +6,11 @@ SRC_DIR := ./srcs/
 GNL_DIR := ./gnl/
 OBJ_DIR	= ./obj/
 
-SRC_FILES = main.c
+SRC_FILES = main.c \
+			render.c \
+			graphics_utils.c \
+			controls.c \
+			utils.c
 
 GNL_FILES = get_next_line.c \
 			get_next_line_utils.c

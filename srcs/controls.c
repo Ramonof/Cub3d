@@ -1,6 +1,20 @@
 #include "cub3d.h"
 
+static void	movement(t_app *app, int keycode);
+static void	rotate_camera(t_app *app, int direction);
+
 int	keyboard_input(int keycode, t_app *app)
+{
+	movement(app, keycode);
+	if (keycode == ESC_KEY)
+		close_app(app);
+	app->player.posX = fclamp(app->player.posX, 0, 23);
+	app->player.posY = fclamp(app->player.posY, 0, 23);
+	render(app);
+	return (0);
+}
+
+static void	movement(t_app *app, int keycode)
 {
 	if (keycode == D_KEY)
 	{
@@ -22,44 +36,34 @@ int	keyboard_input(int keycode, t_app *app)
 		app->player.posX -= app->player.dirX * SPEED;
 		app->player.posY -= app->player.dirY * SPEED;
 	}
-	else if (keycode == ESC_KEY)
-		close_app(app);
-	app->player.posX = fclamp(app->player.posX, 0, 23);
-	app->player.posY = fclamp(app->player.posY, 0, 23);
-	render(app);
-	return (0);
 }
 
 int mouse_move(int x, int y, t_app *app)
 {
-	double		temp_x;
-	t_player	*p;
-
 	y += 0;
-	p = &app->player;
 	if (app->prev_mouse_x == -1)
 		app->prev_mouse_x = x;
 	if (app->prev_mouse_x > x)
-	{
-		temp_x = p->dirX;
-		p->dirX = p->dirX * cos(-ROT_SPEED) - p->dirY * sin(-ROT_SPEED);
-		p->dirY = temp_x * sin(-ROT_SPEED) + p->dirY * cos(-ROT_SPEED);
-
-		temp_x = p->planeX;
-		p->planeX = p->planeX * cos(-ROT_SPEED) - p->planeY * sin(-ROT_SPEED);
-		p->planeY = temp_x * sin(-ROT_SPEED) + p->planeY * cos(-ROT_SPEED);
-	}
+		rotate_camera(app, -1);
 	else if (app->prev_mouse_x < x)
-	{
-		temp_x = p->dirX;
-		p->dirX = p->dirX * cos(ROT_SPEED) - p->dirY * sin(ROT_SPEED);
-		p->dirY = temp_x * sin(ROT_SPEED) + p->dirY * cos(ROT_SPEED);
-
-		temp_x = p->planeX;
-		p->planeX = p->planeX * cos(ROT_SPEED) - p->planeY * sin(ROT_SPEED);
-		p->planeY = temp_x * sin(ROT_SPEED) + p->planeY * cos(ROT_SPEED);
-	}
+		rotate_camera(app, 1);
 	app->prev_mouse_x = x;
 	render(app);
 	return (0);
+}
+
+static void	rotate_camera(t_app *app, int direction)
+{
+	t_player	*p;
+	double		rotation;
+	double		temp_x;			
+
+	rotation = ROT_SPEED * direction;
+	p = &app->player;
+	temp_x = p->dirX;
+	p->dirX = p->dirX * cos(rotation) - p->dirY * sin(rotation);
+	p->dirY = temp_x * sin(rotation) + p->dirY * cos(rotation);
+	temp_x = p->planeX;
+	p->planeX = p->planeX * cos(rotation) - p->planeY * sin(rotation);
+	p->planeY = temp_x * sin(rotation) + p->planeY * cos(rotation);
 }

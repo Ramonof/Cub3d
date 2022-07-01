@@ -49,8 +49,11 @@ typedef struct s_app
 	int			prev_mouse_x;	// prev mouse X position
 }	t_app;
 
+/* init.c */
+void	init_app(t_app *app);
+
 /* render.c */
-void render(t_app *app);
+void 	render(t_app *app);
 
 /* graphics_utils.c */
 void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
@@ -61,6 +64,6 @@ int 	mouse_move(int x, int y, t_app *app);
 
 /* utils.c */
 double  fclamp(double value, double min, double max);
-int	close_app(t_app *app);
+int		close_app(t_app *app);
 
 #endif

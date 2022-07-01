@@ -10,7 +10,8 @@ SRC_FILES = main.c \
 			render.c \
 			graphics_utils.c \
 			controls.c \
-			utils.c
+			utils.c \
+			init.c
 
 GNL_FILES = get_next_line.c \
 			get_next_line_utils.c

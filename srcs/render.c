@@ -55,7 +55,7 @@ void render(t_app *app)
 				mapX += stepX;
 				side = 0;
 			}
-				else
+			else
 			{
 				sideDistY += deltaDistY;
 				mapY += stepY;
@@ -90,7 +90,7 @@ void render(t_app *app)
 		}
 		
 		if (side == 1)
-			color /= 2;
+			color /= 1.001;
 
 		for (int y = 0; y < drawStart; y++)
 			my_mlx_pixel_put(&app->img, x, y, 0xa8e6d5);

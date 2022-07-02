@@ -40,6 +40,9 @@ typedef struct	s_textures {
 	char	*ea;
 	t_color	f;
 	t_color	c;
+	char	**map;
+	int		map_w;
+	int		map_h;
 }	t_textures;
 
 typedef struct s_player

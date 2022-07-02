@@ -71,7 +71,7 @@ typedef struct s_app
 void	init_app(t_app *app);
 
 /* render.c */
-void 	render(t_app *app);
+void	render(t_app *app);
 
 /* graphics_utils.c */
 void	my_mlx_pixel_put(t_data *data, int x, int y, int color);

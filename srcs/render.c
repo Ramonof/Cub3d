@@ -12,7 +12,6 @@ void render(t_app *app)
 
 		int mapX = (int)player->posX;
 		int mapY = (int)player->posY;
-		printf("%i - %i\n", mapX, mapY);
 
 		double sideDistX;
 		double sideDistY;

@@ -115,7 +115,9 @@ char	*fill_arr(char *info, char *line)
 		len++;
 		line++;
 	}
-	info = (char*)malloc(sizeof(char) * len + 1);
+	info = (char*)malloc(sizeof(char) * (len + 1));
+	if (!info)
+            error_exit("Malloc");
 	while(*hold)
 	{
 		*info = *hold;
@@ -168,14 +170,9 @@ void	start_parse(char *map_name, t_textures *textures)
 			break ;
 		free(line);
 	}
-	get_map_info(fd, textures, line, &code);
-	// while (code >= 1)
-	// {
-	// 	code = get_next_line(fd, &line, 0);
-	// 	// write(1, line, ft_strlen(line));
-	// 	// write(1, "\n", 1);
-	// 	map_parse(line, textures);
-	// 	free(line);
-	// }
+	iter += get_map_info(fd, textures, line, &code);
+	close(fd);
+	fd = open(map_name, O_RDONLY);
+	get_map(textures, iter, fd, line);
 	close(fd);
 }

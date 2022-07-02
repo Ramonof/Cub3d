@@ -88,7 +88,7 @@ int	parse_start(char *line)
 	return (0);
 }
 
-void	get_to_map(char *line, int *code, int fd)
+void	get_to_map(char *line, int *code, int fd, int *iter)
 {
 	parse_start(line);
 	while (*code)
@@ -96,18 +96,23 @@ void	get_to_map(char *line, int *code, int fd)
 		*code = get_next_line(fd, &line, 0);
 		if (parse_start(line))
 			break ;
+		iter++;
 		free(line);
+		line = NULL;
 	}
+	if (line)
+		free(line);
 	if (*code == 0)
 		error_exit("No map");
 }
 
-void	get_map_info(int fd, t_textures *textures, char *line, int *code)
+int	get_map_info(int fd, t_textures *textures, char *line, int *code)
 {
-	int	map;
+	int	map, iter;
 
 	map = 0;
-	get_to_map(line, code, fd);
+	iter = 0;
+	get_to_map(line, code, fd, &iter);
 	parse_line(line, textures, &map);
 	if (!map)
 		error_exit("No map");
@@ -123,4 +128,5 @@ void	get_map_info(int fd, t_textures *textures, char *line, int *code)
 		textures->map_h++;
 	}
 	check_end(line, code, fd);
+	return (iter);
 }

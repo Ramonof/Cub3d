@@ -13,7 +13,8 @@ SRC_FILES = main.c \
 			utils.c \
 			errors.c \
 			parser.c \
-			textures_utils.c
+			textures_utils.c \
+			init.c
 
 GNL_FILES = get_next_line.c \
 			get_next_line_utils.c
@@ -42,35 +43,54 @@ obj: $(SRCS)
 	@mkdir -p $(OBJ_DIR)
 
 $(OBJ_DIR)%.o: $(SRC_DIR)%.c
-	$(CC) $(CFLAGS) -I/usr/include -Imlx_linux -O3 -c $< -o $@ $(HEADER) -MMD
+	@$(CC) $(CFLAGS) -I/usr/include -Imlx_linux -O3 -c $< -o $@ $(HEADER) -MMD
+	@printf "$(GREEN)█"
 
 $(OBJ_DIR)%.o: $(GNL_DIR)%.c
-	$(CC) $(CFLAGS) -c $< -o $@ $(HEADER) -MMD
+	@$(CC) $(CFLAGS) -O3 -c $< -o $@ $(HEADER) -MMD
 
-$(NAME): mlx obj $(OBJS) $(LIBFT)
-	$(CC) $(OBJS) $(LIBFT) -Lmlx_linux -lmlx_Linux -L/usr/lib -Imlx_linux -lXext -lX11 -lm -lz -o $(NAME)
+$(NAME): echoCMMLX mlx $(LIBFT) echoCM obj $(OBJS) echoCOMP
+	@$(CC) $(OBJS) $(LIBFT) -Lmlx_linux -lmlx_Linux -L/usr/lib -Imlx_linux -lXext -lX11 -lm -lz -o $(NAME)
 
 $(LIBFT): libft
-	$(MAKE) -C ./libft
+	@$(MAKE) -s -C ./libft
 
 mlx:
-	$(MAKE) -C ./mlx_linux
+	@$(MAKE) -s -C ./mlx_linux
+	@echo "$(GREEN) ---> MLX compilation complete\n"
 
 libft: ;
 
 bonus: $(NAME)
 
 clean:
-	$(RM) $(OBJ_DIR)
-	$(MAKE) clean -C ./libft
+	@echo "$(CYAN)---> Cleaning obj\n"
+	@$(RM) $(OBJ_DIR)
+	@$(MAKE) clean -s -C ./libft
 
 fclean: clean
-	/bin/rm -f $(NAME)
-	$(MAKE) fclean -C ./libft
-	$(MAKE) clean -C ./mlx_linux
+	@echo "$(CYAN)---> Cleaning executables and libraries\n"
+	@/bin/rm -f $(NAME)
+	@$(MAKE) fclean -s -C ./libft
+	@$(MAKE) clean -s -C ./mlx_linux
 
 re: fclean all
 
 -include $(OBJS_D)
 
 .PHONY: mlx libft all clean fclean re
+
+echoCM:
+	@echo "$(CYAN)---> Compiling Cub3D"
+
+echoCMMLX:
+	@echo "$(CYAN)---> Compiling MLX$(END)"
+
+echoCOMP:
+	@echo "$(GREEN) ---> Compilation complete\n"
+
+RED = \033[1;31m
+GREEN = \033[1;32m
+YELLOW = \033[1;33m
+CYAN = \033[1;36m
+END = \033[0m

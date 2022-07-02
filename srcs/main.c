@@ -6,7 +6,7 @@
 /*   By: etobias <etobias@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 00:11:55 by mrolande          #+#    #+#             */
-/*   Updated: 2022/07/01 15:07:03 by etobias          ###   ########.fr       */
+/*   Updated: 2022/07/02 00:16:26 by etobias          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,39 +46,47 @@ void	mlx_test(void)
 {
 	t_app	app;
 
-	app.mlx = mlx_init();
-	app.mlx_win = mlx_new_window(app.mlx, WIDTH, HEIGHT, "Hello world!");
-	app.img.img = mlx_new_image(app.mlx, WIDTH, HEIGHT);
-	app.img.addr = mlx_get_data_addr(app.img.img, &app.img.bits_per_pixel, &app.img.line_length,
-								&app.img.endian);
+	init_app(&app);
 
 	app.map = malloc(24 * sizeof(int *));
 	for (int y = 0; y < 24; y++)
 	{
 		app.map[y] = malloc(24 * sizeof(int));
 		for (int x = 0; x < 24; x++)
-		{
 			app.map[y][x] = worldMap[y][x];
-		}
 	}
 
-	app.player.posY = 3.5;
-	app.player.posX = 22.5;
-	app.player.dirX = -1;
-	app.player.dirY = 0;
-	app.player.planeX = 0;
-	app.player.planeY = -0.66;
-
-	render(&app);
-
 	setup_controls(&app);
+	
+	render(&app);
 
 	mlx_loop(app.mlx);
 }
 
+<<<<<<< HEAD
 static void	setup_controls(t_app *app)
 {
 	mlx_key_hook(app->mlx_win, keyboard_input, app);
+=======
+void	gnl_test(void)
+{
+	int		fd, code = 1, hld;
+	char	*line;
+
+	fd = open("README.md", O_RDONLY);
+	while (code)
+	{
+		code = get_next_line(fd, &line, 0);
+		if (*line)
+		{
+			hld = write(1, line, ft_strlen(line));
+			hld = write(1, "\n", 1);
+		}
+		free(line);
+	}
+	close(fd);
+	hld--;
+>>>>>>> 320fea2d54877ef0310ff6159d7d83d0083a4da9
 }
 
 int	main(int argc, char **argv)
@@ -101,4 +109,11 @@ int	main(int argc, char **argv)
 	/**/
 
 	return (0);
+}
+
+static void	setup_controls(t_app *app)
+{
+	mlx_hook(app->mlx_win, 2, 1L<<0, keyboard_input, app);
+	mlx_hook(app->mlx_win, 6, 1L<<6, mouse_move, app);
+	mlx_hook(app->mlx_win, 17, 0L, close_app, app);
 }

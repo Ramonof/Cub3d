@@ -127,7 +127,7 @@ char	*fill_arr(char *info, char *line)
 	return (info);
 }
 
-void	info_type(char *line, t_textures *textures)
+void	info_type(char *line, t_textures *textures, int *code)
 {
 	while (*line == ' ')
 		line++;
@@ -145,22 +145,37 @@ void	info_type(char *line, t_textures *textures)
 		fill_arrc(&(textures->f), line+2);
 	else if (!ft_strncmp(line, "C ", 2))
 		fill_arrc(&(textures->c), line+2);
+	else
+		*code = *code * 2;
 }
 
 void	start_parse(char *map_name, t_textures *textures)
 {
 	char	*line;
-	int		fd, code;
+	int		fd, code, iter;
 
 	code = 1;
+	iter = 0;
 	fd = open(map_name, O_RDONLY);
-	while (code)
+	while (code == 1)
 	{
 		code = get_next_line(fd, &line, 0);
 		// write(1, line, ft_strlen(line));
 		// write(1, "\n", 1);
-		info_type(line, textures);
+		info_type(line, textures, &code);
+		iter++;
+		if (code == 2)
+			break ;
 		free(line);
 	}
+	get_map_info(fd, textures, line, &code);
+	// while (code >= 1)
+	// {
+	// 	code = get_next_line(fd, &line, 0);
+	// 	// write(1, line, ft_strlen(line));
+	// 	// write(1, "\n", 1);
+	// 	map_parse(line, textures);
+	// 	free(line);
+	// }
 	close(fd);
 }

@@ -24,6 +24,7 @@ void	print_textures_data(t_textures *textures)
 	ft_putendl_fd(textures->ea, 1);
 	printf("F %d,%d,%d\n", textures->f.r, textures->f.g, textures->f.b);
 	printf("C %d,%d,%d\n", textures->c.r, textures->c.g, textures->c.b);
+	printf("w %d h %d\n", textures->map_w, textures->map_h);
 }
 
 void	free_textures_data(t_textures *textures)
@@ -42,4 +43,6 @@ void	init_textures(t_textures *textures)
 	textures->ea = NULL;
 	textures->f.r = -1;
 	textures->c.r = -1;
+	textures->map_w = 0;
+	textures->map_h = 0;
 }

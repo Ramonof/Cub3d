@@ -13,6 +13,7 @@ SRC_FILES = main.c \
 			utils.c \
 			errors.c \
 			parser.c \
+			map_parser.c \
 			textures_utils.c \
 			init.c
 

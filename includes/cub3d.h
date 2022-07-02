@@ -21,6 +21,8 @@
 # define D_KEY 100
 # define ESC_KEY 65307
 
+# define MAP_SET " 01NSEW"
+
 typedef struct	s_data {
 	void	*img;
 	char	*addr;
@@ -94,5 +96,8 @@ void	init_textures(t_textures *textures);
 
 /* parser.c */
 void	start_parse(char *map_name, t_textures *textures);
+
+/* map_parser.c */
+void	get_map_info(int fd, t_textures *textures, char *line, int *code);
 
 #endif

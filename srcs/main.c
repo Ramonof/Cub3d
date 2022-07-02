@@ -63,30 +63,9 @@ void	mlx_test(void)
 	mlx_loop(app.mlx);
 }
 
-<<<<<<< HEAD
 static void	setup_controls(t_app *app)
 {
 	mlx_key_hook(app->mlx_win, keyboard_input, app);
-=======
-void	gnl_test(void)
-{
-	int		fd, code = 1, hld;
-	char	*line;
-
-	fd = open("README.md", O_RDONLY);
-	while (code)
-	{
-		code = get_next_line(fd, &line, 0);
-		if (*line)
-		{
-			hld = write(1, line, ft_strlen(line));
-			hld = write(1, "\n", 1);
-		}
-		free(line);
-	}
-	close(fd);
-	hld--;
->>>>>>> 320fea2d54877ef0310ff6159d7d83d0083a4da9
 }
 
 int	main(int argc, char **argv)
@@ -98,7 +77,7 @@ int	main(int argc, char **argv)
 	ft_putendl_fd(" start", 1);
 
 	/*mlx*/
-	mlx_test();
+	//mlx_test();
 	/**/
 
 	/*parse*/
@@ -111,9 +90,9 @@ int	main(int argc, char **argv)
 	return (0);
 }
 
-static void	setup_controls(t_app *app)
-{
-	mlx_hook(app->mlx_win, 2, 1L<<0, keyboard_input, app);
-	mlx_hook(app->mlx_win, 6, 1L<<6, mouse_move, app);
-	mlx_hook(app->mlx_win, 17, 0L, close_app, app);
-}
+// static void	setup_controls(t_app *app)
+// {
+// 	mlx_hook(app->mlx_win, 2, 1L<<0, keyboard_input, app);
+// 	mlx_hook(app->mlx_win, 6, 1L<<6, mouse_move, app);
+// 	mlx_hook(app->mlx_win, 17, 0L, close_app, app);
+// }

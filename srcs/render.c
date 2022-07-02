@@ -12,6 +12,7 @@ void render(t_app *app)
 
 		int mapX = (int)player->posX;
 		int mapY = (int)player->posY;
+		printf("%i - %i\n", mapX, mapY);
 
 		double sideDistX;
 		double sideDistY;
@@ -61,7 +62,7 @@ void render(t_app *app)
 				mapY += stepY;
 				side = 1;
 			}
-			if (app->map[mapX][mapY] > 0)
+			if (app->map[mapY][mapX] == '1')
 				hit = 1;
 		}
 
@@ -80,14 +81,7 @@ void render(t_app *app)
 			drawEnd = HEIGHT - 1;
 
 		int color;
-		switch(app->map[mapX][mapY])
-		{
-			case 1: color = 0xe34040; break;
-			case 2: color = 0x7592f0; break;
-			case 3: color = 0xf78a5c; break;
-			case 4: color = 0xcfa8e6; break;
-			default: color = 0x00FF0020; break;
-		}
+		color = 0xcfa8e6;
 		
 		if (side == 1)
 			color /= 1.001;

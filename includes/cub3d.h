@@ -65,8 +65,9 @@ typedef struct s_app
 	void		*mlx_win;		// mlx window
 	t_data		img;			// image data
 	t_player	player;			// player data
-	int			**map;			// level map
+	char		**map;			// level map
 	int			prev_mouse_x;	// prev mouse X position
+	t_textures	*textures;
 }	t_app;
 
 /* init.c */

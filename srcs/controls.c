@@ -8,8 +8,8 @@ int	keyboard_input(int keycode, t_app *app)
 	movement(app, keycode);
 	if (keycode == ESC_KEY)
 		close_app(app);
-	app->player.posX = fclamp(app->player.posX, 0, 23);
-	app->player.posY = fclamp(app->player.posY, 0, 23);
+	app->player.posX = fclamp(app->player.posX, 0, app->textures->map_w);
+	app->player.posY = fclamp(app->player.posY, 0, app->textures->map_h);
 	render(app);
 	return (0);
 }

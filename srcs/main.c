@@ -37,13 +37,12 @@ int	main(int argc, char **argv)
 	t_app		app;
 	t_textures	textures;
 
-	if (argc || argv)
-		argc = write(1, *argv, ft_strlen(*argv));
-	ft_putendl_fd(" start", 1);
+	if (argc != 2)
+		error_exit("Bad arguments");
 
 	/* parse */
 	init_textures(&textures);
-	start_parse("test_map1.cub", &textures);
+	start_parse(argv[1], &textures);
 	print_textures_data(&textures);
 
 	app.textures = &textures;

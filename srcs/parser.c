@@ -151,6 +151,22 @@ void	info_type(char *line, t_textures *textures, int *code)
 		*code = *code * 2;
 }
 
+int	check_mapfile(char *map_name)
+{
+	int	fd, i;
+
+	i = 0;
+	while (map_name[i])
+		i++;
+	if (map_name[i-1] != 'b' || map_name[i-2] != 'u' || map_name[i-3] != 'c' ||
+		map_name[i-4] != '.')
+		error_exit("Bad map format");
+	fd = open(map_name, O_RDONLY);
+	if (fd < 0)
+		errno_exit("Map file");
+	return (fd);
+}
+
 void	start_parse(char *map_name, t_textures *textures)
 {
 	char	*line;
@@ -158,12 +174,10 @@ void	start_parse(char *map_name, t_textures *textures)
 
 	code = 1;
 	iter = 0;
-	fd = open(map_name, O_RDONLY);
+	fd = check_mapfile(map_name);
 	while (code == 1)
 	{
 		code = get_next_line(fd, &line, 0);
-		// write(1, line, ft_strlen(line));
-		// write(1, "\n", 1);
 		info_type(line, textures, &code);
 		iter++;
 		if (code == 2)

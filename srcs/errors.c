@@ -18,3 +18,9 @@ void	error_exit(char *err)
 	ft_putendl_fd(err, 2);
 	exit(1);
 }
+
+void	errno_exit(char *err)
+{
+	perror(err);
+	exit (errno);
+}

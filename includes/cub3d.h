@@ -8,6 +8,7 @@
 # include <mlx.h>
 # include <math.h>
 # include <stdio.h>
+# include <errno.h>
 
 # define WIDTH 1280
 # define HEIGHT 720
@@ -83,6 +84,7 @@ int		close_app(t_app *app);
 
 /* errors.c*/
 void	error_exit(char *err);
+void	errno_exit(char *err);
 
 /* textures_utils.c */
 void	print_textures_data(t_textures *textures);

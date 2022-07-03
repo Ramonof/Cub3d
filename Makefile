@@ -1,3 +1,52 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: mrolande <mrolande@student.21-school.ru    +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2022/07/03 12:41:12 by mrolande          #+#    #+#              #
+#    Updated: 2022/07/03 12:41:12 by mrolande         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
+# Color Aliases
+RED = \033[1;31m
+GREEN = \033[1;32m
+YELLOW = \033[1;33m
+CYAN = \033[1;36m
+END = \033[0m
+
+# Key Codes for MacOS
+ESC = ESC_KEY=53
+W = W_KEY=13
+A = A_KEY=0
+S = S_KEY=1
+D = D_KEY=2
+UP = KEY_UP=126
+DOWN = KEY_DOWN=125
+LEFT = KEY_LEFT=123
+RIGHT = KEY_RIGHT=124
+
+SHELL=/bin/bash
+UNAME = $(shell uname -s)
+
+ifeq ($(UNAME), Linux)
+# 	Key Codes for Linux
+	ESC = ESC_KEY=65307
+	W = W_KEY=119
+	A = A_KEY=97
+	S = S_KEY=115
+	D = D_KEY=100
+	UP = KEY_UP=65362
+	DOWN = KEY_DOWN=65364
+	LEFT = KEY_LEFT=65361
+	RIGHT = KEY_RIGHT=65363
+endif
+
+# Keycodes defined during compilation
+KEYCODES =  -D $(ESC) -D $(W) -D $(A) -D $(S) -D $(D) -D $(UP) -D $(DOWN) -D $(LEFT) -D $(RIGHT)
+
 NAME := cub3D
 LIBFT := libft/libft.a
 CC := gcc
@@ -46,7 +95,7 @@ obj: $(SRCS)
 	@mkdir -p $(OBJ_DIR)
 
 $(OBJ_DIR)%.o: $(SRC_DIR)%.c
-	@$(CC) $(CFLAGS) -I/usr/include -Imlx_linux -O3 -c $< -o $@ $(HEADER) -MMD
+	@$(CC) $(CFLAGS) $(KEYCODES) -I/usr/include -Imlx_linux -O3 -c $< -o $@ $(HEADER) -MMD
 	@printf "$(GREEN)█"
 
 $(OBJ_DIR)%.o: $(GNL_DIR)%.c
@@ -91,9 +140,3 @@ echoCMMLX:
 
 echoCOMP:
 	@echo "$(GREEN) ---> Compilation complete\n"
-
-RED = \033[1;31m
-GREEN = \033[1;32m
-YELLOW = \033[1;33m
-CYAN = \033[1;36m
-END = \033[0m

@@ -15,12 +15,6 @@
 # define SPEED 0.2
 # define ROT_SPEED 0.06
 
-# define W_KEY 119
-# define A_KEY 97
-# define S_KEY 115
-# define D_KEY 100
-# define ESC_KEY 65307
-
 # define MAP_SET " 01NSEW"
 
 typedef struct	s_data {

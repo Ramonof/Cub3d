@@ -78,6 +78,11 @@ int	fill_g(t_color *info, char *line, int nbr)
 	 	error_exit("Incorrect info format");
 	line++;
 	nbr++;
+	while (*line == ' ')
+	{
+		line++;
+		nbr++;
+	}
 	if (!ft_isdigit(*line))
 	 	error_exit("Incorrect info format");
 	return (nbr);
@@ -97,6 +102,11 @@ int	fill_r(t_color *info, char *line, int nbr)
 	 	error_exit("Incorrect info format");
 	line++;
 	nbr++;
+	while (*line == ' ')
+	{
+		line++;
+		nbr++;
+	}
 	if (!ft_isdigit(*line))
 	 	error_exit("Incorrect info format");
 	return (nbr);

@@ -100,8 +100,12 @@ void	start_parse(char *map_name, t_textures *textures);
 
 /* map_parser.c */
 int	get_map_info(int fd, t_textures *textures, char *line, int *code);
+int	in_set(char c, const char *set);
 
 /* get_map.c */
 void    get_map(t_textures *textures, int iter, int fd, char *line);
+
+/* check_map.c */
+void	check_map(t_textures *textures);
 
 #endif

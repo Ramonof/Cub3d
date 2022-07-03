@@ -82,4 +82,5 @@ void	get_map(t_textures *textures, int iter, int fd, char *line)
 	}
 	alloc_map(textures);
 	save_map(textures, fd, line);
+	check_map(textures);
 }

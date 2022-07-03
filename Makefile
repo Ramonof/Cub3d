@@ -16,7 +16,8 @@ SRC_FILES = main.c \
 			map_parser.c \
 			textures_utils.c \
 			init.c \
-			get_map.c
+			get_map.c \
+			check_map.c
 
 GNL_FILES = get_next_line.c \
 			get_next_line_utils.c

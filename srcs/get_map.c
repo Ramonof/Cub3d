@@ -14,23 +14,22 @@
 
 void	alloc_map(t_textures *textures)
 {
-	int i;
+	int	i;
 
 	i = 0;
-	textures->map = (char**)malloc(sizeof(char*)*(textures->map_h+1));
+	textures->map = (char **)malloc(sizeof(char *) * (textures->map_h + 1));
 	if (!textures->map)
 		error_exit("Malloc");
 	while (i < textures->map_h)
 	{
-		textures->map[i] = (char*)malloc(sizeof(char)*(textures->map_w+1));
+		textures->map[i] = (char *)malloc(sizeof(char) * (textures->map_w + 1));
 		if (!textures->map[i])
 			error_exit("Malloc");
 		i++;
 	}
-	
 }
 
-void    fill_line(t_textures *textures, char *line, int num)
+void	fill_line(t_textures *textures, char *line, int num)
 {
 	int	i;
 
@@ -50,7 +49,8 @@ void    fill_line(t_textures *textures, char *line, int num)
 
 void	save_map(t_textures *textures, int fd, char *line)
 {
-	int code, num;
+	int	code;
+	int	num;
 
 	code = 1;
 	num = 0;
@@ -68,7 +68,8 @@ void	save_map(t_textures *textures, int fd, char *line)
 
 void	get_map(t_textures *textures, int iter, int fd, char *line)
 {
-	int code, cur_iter;
+	int	code;
+	int	cur_iter;
 
 	code = 1;
 	cur_iter = 0;
@@ -77,7 +78,7 @@ void	get_map(t_textures *textures, int iter, int fd, char *line)
 		code = get_next_line(fd, &line, 0);
 		cur_iter++;
 		free(line);
-		if (cur_iter == iter-1)
+		if (cur_iter == iter - 1)
 			break ;
 	}
 	alloc_map(textures);

@@ -12,20 +12,6 @@
 
 #include "cub3d.h"
 
-int	in_set(char c, const char *set)
-{
-	int	i;
-
-	i = 0;
-	while (set[i])
-	{
-		if (set[i] == c)
-			return (1);
-		i++;
-	}
-	return (0);
-}
-
 void	parse_line(char *line, t_textures *textures, int *map)
 {
 	int	i;
@@ -44,19 +30,6 @@ void	parse_line(char *line, t_textures *textures, int *map)
 		return ;
 	if (i > textures->map_w)
 		textures->map_w = i;
-}
-
-void	parse_end(char *line)
-{
-	int	i;
-
-	i = 0;
-	while (line[i])
-	{
-		if (!in_set(line[i], " "))
-			error_exit("Bad map");
-		i++;
-	}
 }
 
 void	check_end(char *line, int *code, int fd)
@@ -108,7 +81,8 @@ void	get_to_map(char *line, int *code, int fd, int *iter)
 
 int	get_map_info(int fd, t_textures *textures, char *line, int *code)
 {
-	int	map, iter;
+	int	map;
+	int	iter;
 
 	map = 0;
 	iter = 0;

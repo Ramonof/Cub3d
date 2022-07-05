@@ -12,6 +12,7 @@
 
 #include "cub3d.h"
 
+/* Not needed in final version */
 void	print_textures_data(t_textures *textures)
 {
 	int i = 0, j;

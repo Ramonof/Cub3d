@@ -53,6 +53,22 @@ void	check_enclosed_vh(t_textures *textures, int i, int j)
 	check_enclosed_d(textures, i, j);
 }
 
+void	check_border(t_textures *textures, int i, int j)
+{
+	if (i == 0)
+		if (textures->map[i][j] != '1' && textures->map[i][j] != ' ')
+			error_exit("Bad map : Map should be surrounded by walls");
+	if (i == textures->map_h - 1)
+		if (textures->map[i][j] != '1' && textures->map[i][j] != ' ')
+			error_exit("Bad map : Map should be surrounded by walls");
+	if (j == 0)
+		if (textures->map[i][j] != '1' && textures->map[i][j] != ' ')
+			error_exit("Bad map : Map should be surrounded by walls");
+	if (j == textures->map_w - 1)
+		if (textures->map[i][j] != '1' && textures->map[i][j] != ' ')
+			error_exit("Bad map : Map should be surrounded by walls");
+}
+
 void	check_map(t_textures *textures)
 {
 	int	i;
@@ -68,6 +84,7 @@ void	check_map(t_textures *textures)
 		{
 			if (in_set(textures->map[i][j], "NSEW"))
 				player += 1;
+			check_border(textures, i, j);
 			check_enclosed_vh(textures, i, j);
 			j++;
 		}

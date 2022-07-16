@@ -16,6 +16,9 @@ int	keyboard_input(int keycode, t_app *app)
 
 static void	movement(t_app *app, int keycode)
 {
+	double X = app->player.posX;
+	double Y = app->player.posY;
+
 	if (keycode == D_KEY)
 	{
 		app->player.posX += app->player.planeX * SPEED;
@@ -35,6 +38,12 @@ static void	movement(t_app *app, int keycode)
 	{
 		app->player.posX -= app->player.dirX * SPEED;
 		app->player.posY -= app->player.dirY * SPEED;
+	}
+
+	if (app->map[(int)app->player.posY][(int)app->player.posX] == '1')
+	{
+		app->player.posX = X;
+		app->player.posY = Y;
 	}
 }
 

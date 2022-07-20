@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: mrolande <mrolande@student.21-school.ru    +#+  +:+       +#+         #
+#    By: etobias <etobias@student.21-school.ru>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/07/03 12:41:12 by mrolande          #+#    #+#              #
-#    Updated: 2022/07/03 12:41:12 by mrolande         ###   ########.fr        #
+#    Updated: 2022/07/20 17:21:42 by etobias          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -111,19 +111,19 @@ $(LIBFT): libft
 
 mlx:
 	@$(MAKE) -s -C ./mlx_linux
-	@echo "$(GREEN) ---> MLX compilation complete\n"
+	@printf "$(GREEN) ---> MLX compilation complete\n"
 
 libft: ;
 
 bonus: $(NAME)
 
 clean:
-	@echo "$(CYAN)---> Cleaning obj\n"
+	@printf "$(CYAN)---> Cleaning obj\n"
 	@$(RM) $(OBJ_DIR)
 	@$(MAKE) clean -s -C ./libft
 
 fclean: clean
-	@echo "$(CYAN)---> Cleaning executables and libraries\n"
+	@printf "$(CYAN)---> Cleaning executables and libraries\n"
 	@/bin/rm -f $(NAME)
 	@$(MAKE) fclean -s -C ./libft
 	@$(MAKE) clean -s -C ./mlx_linux
@@ -135,10 +135,10 @@ re: fclean all
 .PHONY: mlx libft all clean fclean re
 
 echoCM:
-	@echo "$(CYAN)---> Compiling Cub3D"
+	@printf "$(CYAN)---> Compiling Cub3D\n"
 
 echoCMMLX:
-	@echo "$(CYAN)---> Compiling MLX$(END)"
+	@printf "$(CYAN)---> Compiling MLX\n$(END)"
 
 echoCOMP:
-	@echo "$(GREEN) ---> Compilation complete\n"
+	@printf "$(GREEN) ---> Compilation complete\n"

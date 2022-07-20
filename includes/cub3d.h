@@ -18,6 +18,9 @@
 
 # define MAP_SET " 01NSEW"
 
+# define FLOOR_COLOR 0x6e6e6e
+# define CEILING_COLOR 0xa8e6d5
+
 typedef struct	s_data {
 	void	*img;
 	char	*addr;
@@ -64,6 +67,24 @@ typedef struct s_app
 	int			prev_mouse_x;	// prev mouse X position
 	t_textures	*textures;
 }	t_app;
+
+typedef struct s_ray
+{
+	int		screen_x;
+	double 	camera_x;
+	double 	ray_dir_x;
+	double 	ray_dir_y;
+	int		draw_start;
+	int		draw_end;
+	int		map_x;
+	int		map_y;
+	double	delta_dist_x;
+	double	delta_dist_y;
+	double	side_dist_x;
+	double	side_dist_y;
+	int		step_x;
+	int		step_y;
+}	t_ray;
 
 /* init.c */
 void	init_app(t_app *app);

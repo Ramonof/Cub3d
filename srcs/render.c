@@ -6,7 +6,7 @@
 /*   By: etobias <etobias@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 18:21:19 by etobias           #+#    #+#             */
-/*   Updated: 2022/07/20 18:48:43 by etobias          ###   ########.fr       */
+/*   Updated: 2022/07/21 00:48:33 by etobias          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,11 @@ void render(t_app *app)
 		
 		render_screen_line(app, &ray);
 	}
+	int w = 32;
+	void *img = mlx_xpm_file_to_image(app->mlx, "textures/wall.xpm", &w, &w);
+
 	mlx_put_image_to_window(app->mlx, app->mlx_win, app->img.img, 0, 0);
+	mlx_put_image_to_window(app->mlx, app->mlx_win, img, 0, 0);
 }
 
 static void	init_ray(t_player *player, t_ray *ray, int screen_x)
@@ -84,6 +88,44 @@ static void	render_screen_line(t_app *app, t_ray *ray)
 	int color = get_side_color(side);
 
 	draw_screen_line(&app->img, ray, color);
+	/*double	perpWallDist;
+	if (!(side % 2))
+		perpWallDist = (ray->side_dist_x - ray->delta_dist_x);
+	else
+		perpWallDist = (ray->side_dist_y - ray->delta_dist_y);
+	double hit_x;
+	if (side == 0) hit_x = app->player.posY + perpWallDist * ray->ray_dir_y;
+	else hit_x = app->player.posX + perpWallDist * ray->ray_dir_x;
+	hit_x -= floor(hit_x);
+	
+	int tex_x = (int)(hit_x * 32.0);
+	if(side % 2 == 0) tex_x = 32 - tex_x - 1;
+    if(side % 2 != 0) tex_x = 32 - tex_x - 1;
+
+
+	int lineHeight = (int)(HEIGHT / perpWallDist);
+	// How much to increase the texture coordinate per screen pixel
+	double step = 1.0 * 32.0 / lineHeight;
+	// Starting texture coordinate
+	double texPos = (ray->draw_start - HEIGHT / 2 + lineHeight / 2) * step;
+	int texture[32 * 32];
+	for(int x = 0; x < 32; x++) {
+		for(int y = 0; y < 32; y++)
+		{
+			texture[32 * y + x] = 65536 * 254 * (x != y && x != 32 - y);
+		}
+	}
+  
+	for(int y = ray->draw_start; y<ray->draw_end; y++)
+	{
+		// Cast the texture coordinate to integer, and mask with (texHeight - 1) in case of overflow
+		int texY = (int)texPos & (32 - 1);
+        texPos += step;
+		color = texture[32 * texY + tex_x];
+		
+        my_mlx_pixel_put(&app->img, ray->screen_x, y, color);
+	}*/
+    
 }
 
 static int	cast_ray(t_app *app, t_ray *ray)

@@ -6,7 +6,7 @@
 /*   By: etobias <etobias@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 18:21:19 by etobias           #+#    #+#             */
-/*   Updated: 2022/07/25 17:56:28 by etobias          ###   ########.fr       */
+/*   Updated: 2022/07/26 02:28:53 by etobias          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,28 +16,18 @@ static void	init_ray(t_player *player, t_ray *ray, int screen_x);
 static void	render_screen_line(t_app *app, t_ray *ray);
 static void	get_line_borders(t_ray *ray, int side);
 static int	cast_ray(t_app *app, t_ray *ray);
-static int	get_side_color(int side);
-static void	draw_screen_line(t_data *img, t_ray *ray, int color);
 
-void render(t_app *app)
+void	render(t_app *app)
 {
-	t_ray ray;
+	t_ray	ray;
+	int		screen_x;
 
-	int w = 64;
-	void *p = mlx_xpm_file_to_image(app->mlx, "textures/N.xpm", &w, &w);
-	app->textures->no = mlx_get_data_addr(p, &w, &w, &w);
-	p = mlx_xpm_file_to_image(app->mlx, "textures/S.xpm", &w, &w);
-	app->textures->so = mlx_get_data_addr(p, &w, &w, &w);
-	p = mlx_xpm_file_to_image(app->mlx, "textures/E.xpm", &w, &w);
-	app->textures->ea = mlx_get_data_addr(p, &w, &w, &w);
-	p = mlx_xpm_file_to_image(app->mlx, "textures/W.xpm", &w, &w);
-	app->textures->we = mlx_get_data_addr(p, &w, &w, &w);
-
-	for (int screen_x = 0; screen_x < WIDTH; screen_x++)
+	screen_x = 0;
+	while (screen_x < WIDTH)
 	{
 		init_ray(&app->player, &ray, screen_x);
-		
 		render_screen_line(app, &ray);
+		++screen_x;
 	}
 	mlx_put_image_to_window(app->mlx, app->mlx_win, app->img.img, 0, 0);
 }
@@ -85,71 +75,80 @@ static void	init_ray(t_player *player, t_ray *ray, int screen_x)
 
 static void	render_screen_line(t_app *app, t_ray *ray)
 {
-	int side;
-	
-	side = cast_ray(app, ray);	
+	int	side;
+	int	text_size;
 
+	text_size = app->textures->size;
+	side = cast_ray(app, ray);
 	get_line_borders(ray, side);
-
-	int color = get_side_color(side);
-
-	draw_screen_line(&app->img, ray, color);
 	
-	
-	double	perpWallDist;
+	double	perp_wall_dist;
 	if (!(side % 2))
-		perpWallDist = (ray->side_dist_x - ray->delta_dist_x);
+		perp_wall_dist = (ray->side_dist_x - ray->delta_dist_x);
 	else
-		perpWallDist = (ray->side_dist_y - ray->delta_dist_y);
-	double hit_x;
-	if (side == 0) hit_x = app->player.posY + perpWallDist * ray->ray_dir_y;
-	else hit_x = app->player.posX + perpWallDist * ray->ray_dir_x;
+		perp_wall_dist = (ray->side_dist_y - ray->delta_dist_y);
+	double	hit_x;
+	if (!(side % 2))
+		hit_x = app->player.posY + perp_wall_dist * ray->ray_dir_y;
+	else
+		hit_x = app->player.posX + perp_wall_dist * ray->ray_dir_x;
 	hit_x -= floor(hit_x);
 	
-	int tex_x = (int)(hit_x * 64.0);
-	if(side % 2 == 0) tex_x = 64 - tex_x - 1;
-    if(side % 2 != 0) tex_x = 64 - tex_x - 1;
+	int	tex_x = (int)(hit_x * (float)text_size);
 
-
-	int lineHeight = (int)(HEIGHT / perpWallDist);
+	int	lineHeight = (int)(HEIGHT / perp_wall_dist);
 	// How much to increase the texture coordinate per screen pixel
-	double step = 1.0 * 64.0 / lineHeight;
+	double	step = 1.0 * (float)text_size / lineHeight;
 	// Starting texture coordinate
-	double texPos = (ray->draw_start - HEIGHT / 2 + lineHeight / 2) * step;
-	char *texture;
+	double	tex_pos = (ray->draw_start - HEIGHT / 2 + lineHeight / 2) * step;
+	char	*texture;
 	if (side == 0)
-		texture = app->textures->no;
+		texture = app->textures->n_texture;
 	else if (side == 1)
-		texture = app->textures->so;
+		texture = app->textures->s_texture;
 	else if (side == 2)
-		texture = app->textures->ea;
+		texture = app->textures->e_texture;
 	else if (side == 3)
-		texture = app->textures->we;
+		texture = app->textures->w_texture;
 	else
-		texture = app->textures->no;
+		texture = app->textures->n_texture;
 
-	for (int y = ray->draw_start; y < ray->draw_end + 1; y++)
+	int	y;
+	y = ray->draw_start;
+	while (y < ray->draw_end + 1)
 	{
 		// Cast the texture coordinate to integer, and mask with (texHeight - 1) in case of overflow
-		int texY = (int)texPos & (64 - 1);
-        texPos += step;
-		//color = texture[64 * texY + tex_x];
-		unsigned int ind = 64 * texY + tex_x;
-		unsigned int *p = (unsigned int *)texture;
-		int col = mlx_get_color_value(app->mlx, p[ind]);
-		
-        //my_mlx_pixel_put(&app->img, ray->screen_x, y, color);
-        my_mlx_pixel_put(&app->img, ray->screen_x, y, col);
+		int	texY = (int)tex_pos & (text_size - 1);
+        tex_pos += step;
+
+		unsigned int	ind = text_size * texY + tex_x;
+		unsigned int	*p = (unsigned int *)texture;
+		int				col = mlx_get_color_value(app->mlx, p[ind]);
+
+		my_mlx_pixel_put(&app->img, ray->screen_x, y, col);
+		++y;
 	}
-    
+
+	int	screen_y;
+
+	screen_y = 0;
+	t_color	color = app->textures->c;
+	int		c = create_argb(255, color.r, color.g, color.b);
+	while (screen_y < ray->draw_start)
+		my_mlx_pixel_put(&app->img, ray->screen_x, ++screen_y, c);
+	screen_y = ray->draw_end;
+	color = app->textures->f;
+	c = create_argb(255, color.r, color.g, color.b);
+	while (screen_y < HEIGHT)
+		my_mlx_pixel_put(&app->img, ray->screen_x, ++screen_y, c);
 }
 
 static int	cast_ray(t_app *app, t_ray *ray)
 {
 	int	side;
 	int	temp_x;
-	int temp_y;
-	
+	int	temp_y;
+
 	while (1)
 	{
 		if (ray->side_dist_x < ray->side_dist_y)
@@ -180,45 +179,18 @@ static int	cast_ray(t_app *app, t_ray *ray)
 
 static void	get_line_borders(t_ray *ray, int side)
 {
-	double	perpWallDist;
+	double	perp_wall_dist;
 	int		lineHeight;
 
 	if (!(side % 2))
-		perpWallDist = (ray->side_dist_x - ray->delta_dist_x);
+		perp_wall_dist = (ray->side_dist_x - ray->delta_dist_x);
 	else
-		perpWallDist = (ray->side_dist_y - ray->delta_dist_y);
-	
-	lineHeight = (int)(HEIGHT / perpWallDist);
+		perp_wall_dist = (ray->side_dist_y - ray->delta_dist_y);
+	lineHeight = (int)(HEIGHT / perp_wall_dist);
 	ray->draw_start = -lineHeight / 2 + HEIGHT / 2;
 	if (ray->draw_start < 0)
 		ray->draw_start = 0;
 	ray->draw_end = lineHeight / 2 + HEIGHT / 2;
 	if (ray->draw_end >= HEIGHT)
 		ray->draw_end = HEIGHT - 1;
-}
-
-static int get_side_color(int side)
-{
-	if (side == 0)
-		return (0x03fcad);
-	if (side == 1)
-		return (0xfcce03);
-	if (side == 2)
-		return (0xfc5a03);
-	if (side == 3)
-		return (0xa0de66);
-	return (0x0);
-}
-
-static void draw_screen_line(t_data *img, t_ray *ray, int color)
-{
-	int screen_y;
-
-	screen_y = 0;
-	while (screen_y < ray->draw_start)
-		my_mlx_pixel_put(img, ray->screen_x, ++screen_y, CEILING_COLOR);
-	while (screen_y < ray->draw_end)
-		my_mlx_pixel_put(img, ray->screen_x, ++screen_y, color);
-	while (screen_y < HEIGHT)
-		my_mlx_pixel_put(img, ray->screen_x, ++screen_y, FLOOR_COLOR);
 }

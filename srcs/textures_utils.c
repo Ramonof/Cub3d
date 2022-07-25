@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   textures_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mrolande <mrolande@student.21-school.ru    +#+  +:+       +#+        */
+/*   By: etobias <etobias@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/02 00:55:49 by mrolande          #+#    #+#             */
-/*   Updated: 2022/07/02 00:55:49 by mrolande         ###   ########.fr       */
+/*   Updated: 2022/07/26 02:16:58 by etobias          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,10 @@
 /* Not needed in final version */
 void	print_textures_data(t_textures *textures)
 {
-	int i = 0, j;
+	int	i;
+	int	j;
+
+	i = 0;
 	ft_putstr_fd("NO ", 1);
 	ft_putendl_fd(textures->no, 1);
 	ft_putstr_fd("SO ", 1);

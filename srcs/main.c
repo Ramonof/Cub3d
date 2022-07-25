@@ -6,7 +6,7 @@
 /*   By: etobias <etobias@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 00:11:55 by mrolande          #+#    #+#             */
-/*   Updated: 2022/07/20 23:36:54 by etobias          ###   ########.fr       */
+/*   Updated: 2022/07/26 02:15:39 by etobias          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,21 +14,18 @@
 
 static void	setup_controls(t_app *app);
 
-void	mlx_test(t_app *app)
+void	start_game(t_app *app)
 {
 	init_app(app);
-
 	setup_controls(app);
-	
 	render(app);
-
 	mlx_loop(app->mlx);
 }
 
 static void	setup_controls(t_app *app)
 {
-	mlx_hook(app->mlx_win, 2, 1L<<0, keyboard_input, app);
-	mlx_hook(app->mlx_win, 6, 1L<<6, mouse_move, app);
+	mlx_hook(app->mlx_win, 2, 1L << 0, keyboard_input, app);
+	mlx_hook(app->mlx_win, 6, 1L << 6, mouse_move, app);
 	mlx_hook(app->mlx_win, 17, 0L, close_app, app);
 }
 
@@ -39,18 +36,12 @@ int	main(int argc, char **argv)
 
 	if (argc != 2)
 		error_exit("Bad arguments");
-
-	/* parse */
 	init_textures(&textures);
 	start_parse(argv[1], &textures);
 	print_textures_data(&textures);
-
 	app.textures = &textures;
-
-	/* mlx */
-	mlx_test(&app);
-	
+	app.textures->size = 64;
+	start_game(&app);
 	free_textures_data(&textures);
-
 	return (0);
 }

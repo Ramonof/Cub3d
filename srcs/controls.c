@@ -6,7 +6,7 @@
 /*   By: etobias <etobias@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 18:21:27 by etobias           #+#    #+#             */
-/*   Updated: 2022/07/20 18:21:27 by etobias          ###   ########.fr       */
+/*   Updated: 2022/07/26 02:20:10 by etobias          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,11 @@ int	keyboard_input(int keycode, t_app *app)
 
 static void	movement(t_app *app, int keycode)
 {
-	double X = app->player.posX;
-	double Y = app->player.posY;
+	double	x;
+	double	y;
 
+	x = app->player.posX;
+	y = app->player.posY;
 	if (keycode == D_KEY)
 	{
 		app->player.posX += app->player.planeX * SPEED;
@@ -51,15 +53,14 @@ static void	movement(t_app *app, int keycode)
 		app->player.posX -= app->player.dirX * SPEED;
 		app->player.posY -= app->player.dirY * SPEED;
 	}
-
 	if (app->map[(int)app->player.posY][(int)app->player.posX] == '1')
 	{
-		app->player.posX = X;
-		app->player.posY = Y;
+		app->player.posX = x;
+		app->player.posY = y;
 	}
 }
 
-int mouse_move(int x, int y, t_app *app)
+int	mouse_move(int x, int y, t_app *app)
 {
 	y += 0;
 	if (app->prev_mouse_x == -1)

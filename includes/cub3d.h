@@ -18,9 +18,6 @@
 
 # define MAP_SET " 01NSEW"
 
-# define FLOOR_COLOR 0x6e6e6e
-# define CEILING_COLOR 0xa8e6d5
-
 typedef struct	s_data {
 	void	*img;
 	char	*addr;
@@ -40,6 +37,11 @@ typedef struct	s_textures {
 	char	*so;
 	char	*we;
 	char	*ea;
+	int		size;
+	char	*n_texture;
+	char	*s_texture;
+	char	*w_texture;
+	char	*e_texture;
 	t_color	f;
 	t_color	c;
 	char	**map;
@@ -94,6 +96,7 @@ void	render(t_app *app);
 
 /* graphics_utils.c */
 void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
+int		create_argb(int a, int r, int g, int b);
 
 /* controls.c */
 int		keyboard_input(int keycode, t_app *app);

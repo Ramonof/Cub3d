@@ -6,13 +6,14 @@
 /*   By: etobias <etobias@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 18:21:27 by etobias           #+#    #+#             */
-/*   Updated: 2022/07/26 02:20:10 by etobias          ###   ########.fr       */
+/*   Updated: 2022/07/27 20:09:37 by etobias          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
 static void	movement(t_app *app, int keycode);
+static void	move_player(t_app *app, double x_dir, double y_dir);
 static void	rotate_camera(t_app *app, int direction);
 
 int	keyboard_input(int keycode, t_app *app)
@@ -20,44 +21,39 @@ int	keyboard_input(int keycode, t_app *app)
 	movement(app, keycode);
 	if (keycode == ESC_KEY)
 		close_app(app);
-	app->player.posX = fclamp(app->player.posX, 0, app->textures->map_w);
-	app->player.posY = fclamp(app->player.posY, 0, app->textures->map_h);
-	render(app);
 	return (0);
 }
 
 static void	movement(t_app *app, int keycode)
 {
-	double	x;
-	double	y;
-
-	x = app->player.posX;
-	y = app->player.posY;
 	if (keycode == D_KEY)
-	{
-		app->player.posX += app->player.planeX * SPEED;
-		app->player.posY += app->player.planeY * SPEED;
-	}
+		move_player(app, app->player.planeX, app->player.planeY);
 	else if (keycode == A_KEY)
-	{
-		app->player.posX -= app->player.planeX * SPEED;
-		app->player.posY -= app->player.planeY * SPEED;
-	}
+		move_player(app, -app->player.planeX, -app->player.planeY);
 	else if (keycode == W_KEY)
-	{
-		app->player.posX += app->player.dirX * SPEED;
-		app->player.posY += app->player.dirY * SPEED;
-	}
+		move_player(app, app->player.dirX, app->player.dirY);
 	else if (keycode == S_KEY)
-	{
-		app->player.posX -= app->player.dirX * SPEED;
-		app->player.posY -= app->player.dirY * SPEED;
-	}
-	if (app->map[(int)app->player.posY][(int)app->player.posX] == '1')
-	{
-		app->player.posX = x;
-		app->player.posY = y;
-	}
+		move_player(app, -app->player.dirX, -app->player.dirY);
+}
+
+static void	move_player(t_app *app, double x_dir, double y_dir)
+{
+	double	x_speed;
+	double	y_speed;
+	int		next_x;
+	int		next_y;
+
+	x_speed = x_dir * SPEED;
+	y_speed = y_dir * SPEED;
+	next_x = (int)(app->player.posX + x_speed);
+	next_y = (int)(app->player.posY + y_speed);
+	if (app->map[next_y][(int)app->player.posX] == '1')
+		y_speed = 0.0;
+	if (app->map[(int)app->player.posY][next_x] == '1')
+		x_speed = 0.0;
+	app->player.posX += x_speed;
+	app->player.posY += y_speed;
+	app->update = true;
 }
 
 int	mouse_move(int x, int y, t_app *app)
@@ -70,7 +66,6 @@ int	mouse_move(int x, int y, t_app *app)
 	else if (app->prev_mouse_x < x)
 		rotate_camera(app, 1);
 	app->prev_mouse_x = x;
-	render(app);
 	return (0);
 }
 
@@ -88,4 +83,5 @@ static void	rotate_camera(t_app *app, int direction)
 	temp_x = p->planeX;
 	p->planeX = p->planeX * cos(rotation) - p->planeY * sin(rotation);
 	p->planeY = temp_x * sin(rotation) + p->planeY * cos(rotation);
+	app->update = true;
 }

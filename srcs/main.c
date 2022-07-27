@@ -6,7 +6,7 @@
 /*   By: etobias <etobias@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 00:11:55 by mrolande          #+#    #+#             */
-/*   Updated: 2022/07/26 02:15:39 by etobias          ###   ########.fr       */
+/*   Updated: 2022/07/27 20:06:40 by etobias          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,21 @@
 
 static void	setup_controls(t_app *app);
 
+static int	main_loop(t_app *app)
+{
+	if (app->update)
+	{
+		render(app);
+		app->update = false;
+	}
+	return 1;
+}
+
 void	start_game(t_app *app)
 {
 	init_app(app);
 	setup_controls(app);
-	render(app);
+	mlx_loop_hook(app->mlx, main_loop, app);
 	mlx_loop(app->mlx);
 }
 

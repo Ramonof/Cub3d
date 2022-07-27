@@ -6,7 +6,7 @@
 /*   By: etobias <etobias@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 18:21:38 by etobias           #+#    #+#             */
-/*   Updated: 2022/07/26 02:37:41 by etobias          ###   ########.fr       */
+/*   Updated: 2022/07/27 20:06:45 by etobias          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ void	init_app(t_app *app)
 			&app->img.endian);
 	app->prev_mouse_x = -1;
 	app->map = app->textures->map;
+	app->update = true;
 	init_player(app);
 	load_textures(app);
 }

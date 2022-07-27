@@ -9,6 +9,7 @@
 # include <math.h>
 # include <stdio.h>
 # include <errno.h>
+# include <stdbool.h>
 
 # define WIDTH 1280
 # define HEIGHT 720
@@ -68,6 +69,7 @@ typedef struct s_app
 	char		**map;			// level map
 	int			prev_mouse_x;	// prev mouse X position
 	t_textures	*textures;
+	bool		update;
 }	t_app;
 
 typedef struct s_ray
@@ -86,6 +88,8 @@ typedef struct s_ray
 	double	side_dist_y;
 	int		step_x;
 	int		step_y;
+	double	step;
+	double	tex_pos;
 }	t_ray;
 
 /* init.c */

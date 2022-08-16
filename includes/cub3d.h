@@ -118,6 +118,8 @@ void	errno_exit(char *err);
 void	print_textures_data(t_textures *textures);
 void	free_textures_data(t_textures *textures);
 void	init_textures(t_textures *textures);
+int		get_text_x(t_app *app, t_ray *ray, int side, double wall_dist);
+void	get_line_borders(t_ray *ray, int side);
 
 /* parser.c */
 void	start_parse(char *map_name, t_textures *textures);
@@ -143,5 +145,11 @@ void	valid_color(char *str, int num);
 int		fill_g(t_color *info, char *line, int nbr);
 int		fill_b(t_color *info, char *line, int nbr);
 int		fill_r(t_color *info, char *line, int nbr);
+
+/* render_utils.c */
+double	get_wall_dist(t_ray *ray, int side);
+char    *get_texture(t_textures *textures, int side);
+int		cast_ray(t_app *app, t_ray *ray);
+void	calc_ray_side_dist(t_player *player, t_ray *ray);
 
 #endif

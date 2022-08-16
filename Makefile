@@ -6,7 +6,7 @@
 #    By: etobias <etobias@student.21-school.ru>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/07/03 12:41:12 by mrolande          #+#    #+#              #
-#    Updated: 2022/07/20 17:21:42 by etobias          ###   ########.fr        #
+#    Updated: 2022/08/16 22:17:07 by etobias          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -68,7 +68,8 @@ SRC_FILES = main.c \
 			get_map.c \
 			check_map.c \
 			parse_utils.c \
-			parse_utils_utils.c
+			parse_utils_utils.c \
+			render_utils.c
 
 GNL_FILES = get_next_line.c \
 			get_next_line_utils.c

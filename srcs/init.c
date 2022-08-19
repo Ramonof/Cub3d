@@ -6,7 +6,7 @@
 /*   By: etobias <etobias@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 18:21:38 by etobias           #+#    #+#             */
-/*   Updated: 2022/08/19 00:49:05 by etobias          ###   ########.fr       */
+/*   Updated: 2022/08/19 15:36:33 by etobias          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,16 +88,15 @@ static void	load_textures(t_app *app)
 {
 	t_textures	*textures;
 	int			size;
-	void		*p;
 
 	textures = app->textures;
 	size = textures->size;
-	p = mlx_xpm_file_to_image(app->mlx, textures->no, &size, &size);
-	textures->n_texture = mlx_get_data_addr(p, &size, &size, &size);
-	p = mlx_xpm_file_to_image(app->mlx, textures->so, &size, &size);
-	textures->s_texture = mlx_get_data_addr(p, &size, &size, &size);
-	p = mlx_xpm_file_to_image(app->mlx, textures->ea, &size, &size);
-	textures->e_texture = mlx_get_data_addr(p, &size, &size, &size);
-	p = mlx_xpm_file_to_image(app->mlx, textures->we, &size, &size);
-	textures->w_texture = mlx_get_data_addr(p, &size, &size, &size);
+	textures->n_image = mlx_xpm_file_to_image(app->mlx, textures->no, &size, &size);
+	textures->n_texture = mlx_get_data_addr(textures->n_image, &size, &size, &size);
+	textures->s_image = mlx_xpm_file_to_image(app->mlx, textures->so, &size, &size);
+	textures->s_texture = mlx_get_data_addr(textures->s_image, &size, &size, &size);
+	textures->e_image = mlx_xpm_file_to_image(app->mlx, textures->ea, &size, &size);
+	textures->e_texture = mlx_get_data_addr(textures->e_image, &size, &size, &size);
+	textures->w_image = mlx_xpm_file_to_image(app->mlx, textures->we, &size, &size);
+	textures->w_texture = mlx_get_data_addr(textures->w_image, &size, &size, &size);
 }

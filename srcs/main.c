@@ -6,7 +6,7 @@
 /*   By: etobias <etobias@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 00:11:55 by mrolande          #+#    #+#             */
-/*   Updated: 2022/08/19 00:48:21 by etobias          ###   ########.fr       */
+/*   Updated: 2022/08/19 15:37:51 by etobias          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,6 @@ int	main(int argc, char **argv)
 	app.textures = &textures;
 	app.textures->size = 64;
 	start_game(&app);
-	free_textures_data(&textures);
+	free_memory(&app);
 	return (0);
 }

@@ -39,10 +39,14 @@ typedef struct	s_textures {
 	char	*we;
 	char	*ea;
 	int		size;
+	void	*n_image;
+	void	*s_image;
+	void	*e_image;
+	void	*w_image;
 	char	*n_texture;
 	char	*s_texture;
-	char	*w_texture;
 	char	*e_texture;
+	char	*w_texture;
 	t_color	f;
 	t_color	c;
 	char	**map;
@@ -151,5 +155,8 @@ double	get_wall_dist(t_ray *ray, int side);
 char    *get_texture(t_textures *textures, int side);
 int		cast_ray(t_app *app, t_ray *ray);
 void	calc_ray_side_dist(t_player *player, t_ray *ray);
+
+/* free_memory.c */
+void	free_memory(t_app *app);
 
 #endif

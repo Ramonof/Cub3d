@@ -6,7 +6,7 @@
 /*   By: etobias <etobias@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 18:21:19 by etobias           #+#    #+#             */
-/*   Updated: 2022/08/16 22:29:17 by etobias          ###   ########.fr       */
+/*   Updated: 2022/08/22 23:16:05 by etobias          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,59 @@ static void		init_ray(t_player *player, t_ray *ray, int screen_x);
 static void		render_screen_line(t_app *app, t_ray *ray);
 static void		draw(t_app *app, t_ray *ray, char *texture, int tex_x);
 static void		draw_ceil_floor(t_app *app, t_ray *ray);
+
+static void		draw_sprites(t_app *app)
+{
+	double sprite_x = app->sprites[0].x - app->player.posX;
+	double sprite_y = app->sprites[0].y - app->player.posY;
+
+	double inv_det = 1.0 / (app->player.planeX * app->player.dirY - app->player.planeY * app->player.dirX);
+	
+	double transform_x = inv_det * (app->player.dirY * sprite_x - app->player.dirX * sprite_y);
+	double transform_y = inv_det * (-app->player.planeY * sprite_x + app->player.planeX * sprite_y);
+
+	int sprite_screen_x = (int)((WIDTH / 2) * (1 + transform_x / transform_y));
+
+	int sprite_height = abs((int)(HEIGHT / transform_y)); 
+
+	int draw_start_y = -sprite_height / 2 + HEIGHT / 2;
+	if (draw_start_y < 0)
+		draw_start_y = 0;
+	int draw_end_y = sprite_height / 2 + HEIGHT / 2;
+	if (draw_end_y >= HEIGHT)
+		draw_end_y = HEIGHT - 1;
+
+	int sprite_width = abs((int)(HEIGHT / (transform_x)));
+	int draw_start_x = -sprite_width / 2 + sprite_screen_x;
+	if (draw_start_x < 0)
+		draw_start_x = 0;
+
+	int draw_end_x = sprite_width / 2 + sprite_screen_x;
+	if (draw_end_x >= WIDTH)
+		draw_end_x = WIDTH - 1;
+
+	for (int stripe = draw_start_x; stripe < draw_end_x; stripe++)
+	{
+		int tex_x = (int)(256 * (stripe - (-sprite_width / 2 + sprite_screen_x)) * app->textures->size / sprite_width) / 256;
+		//the conditions in the if are:
+		//1) it's in front of camera plane so you don't see things behind you
+		//2) it's on the screen (left)
+		//3) it's on the screen (right)
+		//4) ZBuffer, with perpendicular distance
+		if (transform_x > 0 && stripe > 0 && stripe < WIDTH && transform_y < app->z_buffer[stripe])
+		{
+			for (int y = draw_start_y; y < draw_end_y; y++) //for every pixel of the current stripe
+			{
+				int d = y * 256 - HEIGHT * 128 + sprite_height * 128; //256 and 128 factors to avoid floats
+				int tex_y = ((d * app->textures->size) / sprite_height) / 256;
+				unsigned int ind = app->textures->size * tex_y + tex_x;
+				unsigned int *p = (unsigned int *)app->textures->sprite_texture;
+				int col = mlx_get_color_value(app->mlx, p[ind]);
+				my_mlx_pixel_put(&app->img, stripe, y, col);
+			}
+		}
+	}
+}
 
 void	render(t_app *app)
 {
@@ -29,6 +82,7 @@ void	render(t_app *app)
 		render_screen_line(app, &ray);
 		++screen_x;
 	}
+	draw_sprites(app);
 	mlx_put_image_to_window(app->mlx, app->mlx_win, app->img.img, 0, 0);
 }
 
@@ -64,6 +118,7 @@ static void	render_screen_line(t_app *app, t_ray *ray)
 	side = cast_ray(app, ray);
 	get_line_borders(ray, side);
 	perp_wall_dist = get_wall_dist(ray, side);
+	app->z_buffer[ray->screen_x] = perp_wall_dist;
 	tex_x = get_text_x(app, ray, side, perp_wall_dist);
 	line_height = (int)(HEIGHT / perp_wall_dist);
 	ray->step = 1.0 * (float)app->textures->size / line_height;

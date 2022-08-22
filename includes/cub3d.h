@@ -33,6 +33,12 @@ typedef struct	s_color {
 	int	b;
 }	t_color;
 
+typedef struct s_sprite
+{
+	double	x;
+	double	y;
+}	t_sprite;
+
 typedef struct	s_textures {
 	char	*no;			// walls' texture directories
 	char	*so;
@@ -52,6 +58,8 @@ typedef struct	s_textures {
 	char	**map;			// map data
 	int		map_w;			// map width
 	int		map_h;			// map height
+	void	*sprite_image;
+	char	*sprite_texture;
 }	t_textures;
 
 typedef struct s_player
@@ -71,9 +79,11 @@ typedef struct s_app
 	t_data		img;			// image data
 	t_player	player;			// player data
 	char		**map;			// level map
+	t_sprite	*sprites;
 	int			prev_mouse_x;	// prev mouse X position
 	t_textures	*textures;
 	bool		update;			// flag to update the screen image
+	double		z_buffer[WIDTH];
 }	t_app;
 
 typedef struct s_ray

@@ -6,7 +6,7 @@
 /*   By: etobias <etobias@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 18:21:38 by etobias           #+#    #+#             */
-/*   Updated: 2022/08/19 15:36:33 by etobias          ###   ########.fr       */
+/*   Updated: 2022/08/22 22:05:11 by etobias          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,9 @@ void	init_app(t_app *app)
 	app->update = true;
 	init_player(app);
 	load_textures(app);
+	app->sprites = malloc(sizeof(t_sprite));
+	app->sprites[0].x = 15.0;
+	app->sprites[0].y = 5.0;
 }
 
 static void	init_player(t_app *app)
@@ -99,4 +102,6 @@ static void	load_textures(t_app *app)
 	textures->e_texture = mlx_get_data_addr(textures->e_image, &size, &size, &size);
 	textures->w_image = mlx_xpm_file_to_image(app->mlx, textures->we, &size, &size);
 	textures->w_texture = mlx_get_data_addr(textures->w_image, &size, &size, &size);
+	textures->sprite_image = mlx_xpm_file_to_image(app->mlx, textures->we, &size, &size);
+	textures->sprite_texture = mlx_get_data_addr(textures->sprite_image, &size, &size, &size);
 }

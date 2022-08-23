@@ -6,7 +6,7 @@
 /*   By: etobias <etobias@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 18:21:19 by etobias           #+#    #+#             */
-/*   Updated: 2022/08/22 23:16:05 by etobias          ###   ########.fr       */
+/*   Updated: 2022/08/24 01:26:32 by etobias          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,11 +34,12 @@ static void		draw_sprites(t_app *app)
 	int draw_start_y = -sprite_height / 2 + HEIGHT / 2;
 	if (draw_start_y < 0)
 		draw_start_y = 0;
+	
 	int draw_end_y = sprite_height / 2 + HEIGHT / 2;
 	if (draw_end_y >= HEIGHT)
 		draw_end_y = HEIGHT - 1;
 
-	int sprite_width = abs((int)(HEIGHT / (transform_x)));
+	int sprite_width = abs((int)(HEIGHT / transform_y));
 	int draw_start_x = -sprite_width / 2 + sprite_screen_x;
 	if (draw_start_x < 0)
 		draw_start_x = 0;
@@ -49,22 +50,23 @@ static void		draw_sprites(t_app *app)
 
 	for (int stripe = draw_start_x; stripe < draw_end_x; stripe++)
 	{
-		int tex_x = (int)(256 * (stripe - (-sprite_width / 2 + sprite_screen_x)) * app->textures->size / sprite_width) / 256;
+		int tex_x = (int)((stripe - (-sprite_width / 2 + sprite_screen_x)) * app->textures->size / sprite_width);
 		//the conditions in the if are:
 		//1) it's in front of camera plane so you don't see things behind you
 		//2) it's on the screen (left)
 		//3) it's on the screen (right)
 		//4) ZBuffer, with perpendicular distance
-		if (transform_x > 0 && stripe > 0 && stripe < WIDTH && transform_y < app->z_buffer[stripe])
+		if (transform_y > 0 && stripe > 0 && stripe < WIDTH && transform_y < app->z_buffer[stripe])
 		{
 			for (int y = draw_start_y; y < draw_end_y; y++) //for every pixel of the current stripe
 			{
-				int d = y * 256 - HEIGHT * 128 + sprite_height * 128; //256 and 128 factors to avoid floats
-				int tex_y = ((d * app->textures->size) / sprite_height) / 256;
+				int d = y - HEIGHT / 2 + sprite_height / 2;
+				int tex_y = (d * app->textures->size) / sprite_height;
 				unsigned int ind = app->textures->size * tex_y + tex_x;
 				unsigned int *p = (unsigned int *)app->textures->sprite_texture;
 				int col = mlx_get_color_value(app->mlx, p[ind]);
-				my_mlx_pixel_put(&app->img, stripe, y, col);
+				if (col != 0)
+					my_mlx_pixel_put(&app->img, stripe, y, col);
 			}
 		}
 	}

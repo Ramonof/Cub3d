@@ -6,7 +6,7 @@
 /*   By: etobias <etobias@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 18:21:19 by etobias           #+#    #+#             */
-/*   Updated: 2022/08/24 01:26:32 by etobias          ###   ########.fr       */
+/*   Updated: 2022/08/25 15:24:25 by etobias          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,56 +17,88 @@ static void		render_screen_line(t_app *app, t_ray *ray);
 static void		draw(t_app *app, t_ray *ray, char *texture, int tex_x);
 static void		draw_ceil_floor(t_app *app, t_ray *ray);
 
+static void		sort_sprites(int *sprite_order, double *sprite_distance, size_t sprite_count)
+{
+	size_t	i;
+
+	i = 1;
+	while (i < sprite_count)
+	{
+		if (sprite_distance[sprite_order[i - 1]] < sprite_distance[sprite_order[i]])
+		{
+			int temp = sprite_order[i - 1];
+			sprite_order[i - 1] = sprite_order[i];
+			sprite_order[i] = temp;
+			--i;
+		}
+		++i;
+	}
+}
+
 static void		draw_sprites(t_app *app)
 {
-	double sprite_x = app->sprites[0].x - app->player.posX;
-	double sprite_y = app->sprites[0].y - app->player.posY;
+	int *sprite_order = malloc(app->sprite_count);
+	double *sprite_distance = malloc(app->sprite_count);
 
-	double inv_det = 1.0 / (app->player.planeX * app->player.dirY - app->player.planeY * app->player.dirX);
-	
-	double transform_x = inv_det * (app->player.dirY * sprite_x - app->player.dirX * sprite_y);
-	double transform_y = inv_det * (-app->player.planeY * sprite_x + app->player.planeX * sprite_y);
-
-	int sprite_screen_x = (int)((WIDTH / 2) * (1 + transform_x / transform_y));
-
-	int sprite_height = abs((int)(HEIGHT / transform_y)); 
-
-	int draw_start_y = -sprite_height / 2 + HEIGHT / 2;
-	if (draw_start_y < 0)
-		draw_start_y = 0;
-	
-	int draw_end_y = sprite_height / 2 + HEIGHT / 2;
-	if (draw_end_y >= HEIGHT)
-		draw_end_y = HEIGHT - 1;
-
-	int sprite_width = abs((int)(HEIGHT / transform_y));
-	int draw_start_x = -sprite_width / 2 + sprite_screen_x;
-	if (draw_start_x < 0)
-		draw_start_x = 0;
-
-	int draw_end_x = sprite_width / 2 + sprite_screen_x;
-	if (draw_end_x >= WIDTH)
-		draw_end_x = WIDTH - 1;
-
-	for (int stripe = draw_start_x; stripe < draw_end_x; stripe++)
+	for (size_t i = 0; i < app->sprite_count; i++)
 	{
-		int tex_x = (int)((stripe - (-sprite_width / 2 + sprite_screen_x)) * app->textures->size / sprite_width);
-		//the conditions in the if are:
-		//1) it's in front of camera plane so you don't see things behind you
-		//2) it's on the screen (left)
-		//3) it's on the screen (right)
-		//4) ZBuffer, with perpendicular distance
-		if (transform_y > 0 && stripe > 0 && stripe < WIDTH && transform_y < app->z_buffer[stripe])
+		sprite_order[i] = i;
+		sprite_distance[i] = (app->player.posX - app->sprites[i].x) * (app->player.posX - app->sprites[i].x)
+			+ (app->player.posY - app->sprites[i].y) * (app->player.posY - app->sprites[i].y);
+	}
+	sort_sprites(sprite_order, sprite_distance, app->sprite_count);
+
+	for (size_t i = 0; i < app->sprite_count; i++)
+	{
+		double sprite_x = app->sprites[sprite_order[i]].x - app->player.posX;
+		double sprite_y = app->sprites[sprite_order[i]].y - app->player.posY;
+
+		double inv_det = 1.0 / (app->player.planeX * app->player.dirY - app->player.planeY * app->player.dirX);
+		
+		double transform_x = inv_det * (app->player.dirY * sprite_x - app->player.dirX * sprite_y);
+		double transform_y = inv_det * (-app->player.planeY * sprite_x + app->player.planeX * sprite_y);
+
+		int sprite_screen_x = (int)((WIDTH / 2) * (1 + transform_x / transform_y));
+
+		int sprite_height = abs((int)(HEIGHT / transform_y)); 
+
+		int draw_start_y = -sprite_height / 2 + HEIGHT / 2;
+		if (draw_start_y < 0)
+			draw_start_y = 0;
+		
+		int draw_end_y = sprite_height / 2 + HEIGHT / 2;
+		if (draw_end_y >= HEIGHT)
+			draw_end_y = HEIGHT - 1;
+
+		int sprite_width = abs((int)(HEIGHT / transform_y));
+		int draw_start_x = -sprite_width / 2 + sprite_screen_x;
+		if (draw_start_x < 0)
+			draw_start_x = 0;
+
+		int draw_end_x = sprite_width / 2 + sprite_screen_x;
+		if (draw_end_x >= WIDTH)
+			draw_end_x = WIDTH - 1;
+
+		for (int stripe = draw_start_x; stripe < draw_end_x; stripe++)
 		{
-			for (int y = draw_start_y; y < draw_end_y; y++) //for every pixel of the current stripe
+			int tex_x = (int)((stripe - (-sprite_width / 2 + sprite_screen_x)) * app->textures->size / sprite_width);
+			//the conditions in the if are:
+			//1) it's in front of camera plane so you don't see things behind you
+			//2) it's on the screen (left)
+			//3) it's on the screen (right)
+			//4) ZBuffer, with perpendicular distance
+			if (transform_y > 0 && stripe > 0 && stripe < WIDTH && transform_y < app->z_buffer[stripe])
 			{
-				int d = y - HEIGHT / 2 + sprite_height / 2;
-				int tex_y = (d * app->textures->size) / sprite_height;
-				unsigned int ind = app->textures->size * tex_y + tex_x;
-				unsigned int *p = (unsigned int *)app->textures->sprite_texture;
-				int col = mlx_get_color_value(app->mlx, p[ind]);
-				if (col != 0)
-					my_mlx_pixel_put(&app->img, stripe, y, col);
+				for (int y = draw_start_y; y < draw_end_y; y++) //for every pixel of the current stripe
+				{
+					int d = y - HEIGHT / 2 + sprite_height / 2;
+					int tex_y = (d * app->textures->size) / sprite_height;
+					unsigned int ind = app->textures->size * tex_y + tex_x;
+					unsigned int *p = (unsigned int *)app->textures->sprite_texture;
+					int col = mlx_get_color_value(app->mlx, p[ind]);
+					if (col != 0)
+						my_mlx_pixel_put(&app->img, stripe, y, col);
+				}
 			}
 		}
 	}

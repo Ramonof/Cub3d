@@ -6,5 +6,6 @@ void	free_memory(t_app *app)
 	mlx_destroy_image(app->mlx, app->textures->s_image);
 	mlx_destroy_image(app->mlx, app->textures->e_image);
 	mlx_destroy_image(app->mlx, app->textures->w_image);
+	mlx_destroy_image(app->mlx, app->textures->sprite_image);
 	free_textures_data(app->textures);
 }

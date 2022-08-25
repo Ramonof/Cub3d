@@ -79,6 +79,7 @@ typedef struct s_app
 	t_data		img;			// image data
 	t_player	player;			// player data
 	char		**map;			// level map
+	size_t		sprite_count;
 	t_sprite	*sprites;
 	int			prev_mouse_x;	// prev mouse X position
 	t_textures	*textures;

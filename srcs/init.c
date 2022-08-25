@@ -6,7 +6,7 @@
 /*   By: etobias <etobias@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 18:21:38 by etobias           #+#    #+#             */
-/*   Updated: 2022/08/24 01:25:48 by etobias          ###   ########.fr       */
+/*   Updated: 2022/08/25 14:53:43 by etobias          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,12 @@ void	init_app(t_app *app)
 	app->update = true;
 	init_player(app);
 	load_textures(app);
-	app->sprites = malloc(sizeof(t_sprite));
+	app->sprite_count = 2;
+	app->sprites = malloc(sizeof(t_sprite) * app->sprite_count);
 	app->sprites[0].x = 15.0;
 	app->sprites[0].y = 5.0;
+	app->sprites[1].x = 14.0;
+	app->sprites[1].y = 5.0;
 }
 
 static void	init_player(t_app *app)

@@ -6,7 +6,7 @@
 /*   By: etobias <etobias@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 18:21:19 by etobias           #+#    #+#             */
-/*   Updated: 2022/08/25 15:24:25 by etobias          ###   ########.fr       */
+/*   Updated: 2022/08/25 19:31:28 by etobias          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,34 @@ static void		draw_sprites(t_app *app)
 	}
 }
 
+static void	put_minimap_cell(t_app *app, int x, int y, int col)
+{
+	int scale = 12;
+
+	for (int i = 0; i < scale; i++)
+	{
+		for (int j = 0; j < scale; j++)
+		{
+			my_mlx_pixel_put(&app->img, x * scale + j, y * scale + i, col);
+		}
+	}
+}
+
+static void	draw_minimap(t_app *app)
+{
+	for (int y = 0; y < app->textures->map_h; y++)
+	{
+		for (int x = 0; x < app->textures->map_w; x++)
+		{
+			int col = 0xfad987;
+			if (app->map[y][x] == '1')
+				col = 0xafc3c4;
+			put_minimap_cell(app, x, y, col);
+		}
+	}
+	put_minimap_cell(app, (int)app->player.posX, (int)app->player.posY, 0x05fa91);
+}
+
 void	render(t_app *app)
 {
 	t_ray	ray;
@@ -117,6 +145,7 @@ void	render(t_app *app)
 		++screen_x;
 	}
 	draw_sprites(app);
+	draw_minimap(app);
 	mlx_put_image_to_window(app->mlx, app->mlx_win, app->img.img, 0, 0);
 }
 

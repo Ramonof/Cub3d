@@ -40,11 +40,11 @@ void	valid_color(char *str, int num)
 	{
 		len++;
 		if (len > 3)
-			error_exit("Bad color");
+			error_exit("Bad color: 0-255");
 		str++;
 	}
 	if (num > 255 || num < 0)
-		error_exit("Bad color");
+		error_exit("Bad color: 0-255");
 }
 
 int	fill_b(t_color *info, char *line, int nbr)
@@ -60,7 +60,7 @@ int	fill_b(t_color *info, char *line, int nbr)
 	while (*line == ' ')
 		line++;
 	if (*line)
-		error_exit("Incorrect info format");
+		error_exit("Incorrect info format: incorect separation");
 	return (nbr);
 }
 
@@ -75,7 +75,7 @@ int	fill_g(t_color *info, char *line, int nbr)
 		nbr++;
 	}
 	if (*line != ',')
-		error_exit("Incorrect info format");
+		error_exit("Incorrect info format: incorect separation");
 	line++;
 	nbr++;
 	while (*line == ' ')
@@ -84,7 +84,7 @@ int	fill_g(t_color *info, char *line, int nbr)
 		nbr++;
 	}
 	if (!ft_isdigit(*line))
-		error_exit("Incorrect info format");
+		error_exit("Incorrect info format: not digit color");
 	return (nbr);
 }
 
@@ -99,7 +99,7 @@ int	fill_r(t_color *info, char *line, int nbr)
 		nbr++;
 	}
 	if (*line != ',')
-		error_exit("Incorrect info format");
+		error_exit("Incorrect info format: icorect separation");
 	line++;
 	nbr++;
 	while (*line == ' ')
@@ -108,6 +108,6 @@ int	fill_r(t_color *info, char *line, int nbr)
 		nbr++;
 	}
 	if (!ft_isdigit(*line))
-		error_exit("Incorrect info format");
+		error_exit("Incorrect info format: not digit color");
 	return (nbr);
 }

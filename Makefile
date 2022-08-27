@@ -47,7 +47,10 @@ endif
 # Keycodes defined during compilation
 KEYCODES =  -D $(ESC) -D $(W) -D $(A) -D $(S) -D $(D) -D $(UP) -D $(DOWN) -D $(LEFT) -D $(RIGHT)
 
+MAP_SET = -DMAP_SET='" 01NSEW"'
+
 NAME := cub3D
+NAME_BONUS := cub3D_bonus
 LIBFT := libft/libft.a
 CC := gcc
 CFLAGS := -Wall -Wextra -Werror
@@ -99,7 +102,7 @@ obj: $(SRCS)
 	@mkdir -p $(OBJ_DIR)
 
 $(OBJ_DIR)%.o: $(SRC_DIR)%.c
-	@$(CC) $(CFLAGS) $(KEYCODES) -I/usr/include -Imlx_linux -O3 -c $< -o $@ $(HEADER) -MMD
+	@$(CC) $(CFLAGS) $(KEYCODES) $(MAP_SET) -I/usr/include -Imlx_linux -O3 -c $< -o $@ $(HEADER) -MMD
 	@printf "$(GREEN)█"
 
 $(OBJ_DIR)%.o: $(GNL_DIR)%.c
@@ -117,7 +120,11 @@ mlx:
 
 libft: ;
 
-bonus: $(NAME)
+map:
+	@touch includes/cub3D.h
+	$(eval MAP_SET=-DMAP_SET='"D 01NSEW"')
+
+bonus: map $(NAME)
 
 clean:
 	@printf "$(CYAN)---> Cleaning obj\n"

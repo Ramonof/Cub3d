@@ -6,7 +6,7 @@
 /*   By: etobias <etobias@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/16 22:30:54 by etobias           #+#    #+#             */
-/*   Updated: 2022/08/28 11:48:04 by etobias          ###   ########.fr       */
+/*   Updated: 2022/08/28 12:03:03 by etobias          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int	cast_ray(t_app *app, t_ray *ray)
 		side = calc_ray_pos(ray);
 		if (app->map[ray->map_y][ray->map_x] == '1')
 			return (side);
-		if (app->map[ray->map_y][ray->map_x] == '2')
+		if (app->map[ray->map_y][ray->map_x] == 'D')
 			return (side);
 	}
 	return (0);

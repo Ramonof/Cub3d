@@ -6,7 +6,7 @@
 /*   By: etobias <etobias@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 18:21:19 by etobias           #+#    #+#             */
-/*   Updated: 2022/08/28 11:57:01 by etobias          ###   ########.fr       */
+/*   Updated: 2022/08/28 12:05:43 by etobias          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,10 +126,10 @@ static void	draw_minimap(t_app *app)
 			int col = 0xfad987;
 			if (app->map[y][x] == '1')
 				col = 0xafc3c4;
-			else if (app->map[y][x] == '2')
-				col = 0xffc3c4;
+			else if (app->map[y][x] == 'D')
+				col = 0xd481bc;
 			else if (app->map[y][x] == '3')
-				col = 0xfac3c4;
+				col = 0xe0a6d0;
 			put_minimap_cell(app, x, y, col);
 		}
 	}

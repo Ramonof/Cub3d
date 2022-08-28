@@ -39,6 +39,7 @@ typedef struct s_sprite
 {
 	double	x;
 	double	y;
+	int		texture_id;
 }	t_sprite;
 
 typedef struct	s_textures {

@@ -6,7 +6,7 @@
 /*   By: etobias <etobias@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 18:21:27 by etobias           #+#    #+#             */
-/*   Updated: 2022/07/27 20:09:37 by etobias          ###   ########.fr       */
+/*   Updated: 2022/08/28 11:57:53 by etobias          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,21 @@ int	keyboard_input(int keycode, t_app *app)
 	movement(app, keycode);
 	if (keycode == ESC_KEY)
 		close_app(app);
+	if (keycode == 101)
+	{
+		int map_x = (int)(app->player.posX + app->player.dirX);
+		int map_y = (int)(app->player.posY + app->player.dirY);
+		if (app->map[map_y][map_x] == '2')
+		{
+			app->map[map_y][map_x] = '3';
+			app->update = true;
+		}
+		else if (app->map[map_y][map_x] == '3')
+		{
+			app->map[map_y][map_x] = '2';
+			app->update = true;
+		}
+	}
 	return (0);
 }
 
@@ -47,9 +62,11 @@ static void	move_player(t_app *app, double x_dir, double y_dir)
 	y_speed = y_dir * SPEED;
 	next_x = (int)(app->player.posX + x_speed);
 	next_y = (int)(app->player.posY + y_speed);
-	if (app->map[next_y][(int)app->player.posX] == '1')
+	if (app->map[next_y][(int)app->player.posX] == '1'
+		|| app->map[next_y][(int)app->player.posX] == '2')
 		y_speed = 0.0;
-	if (app->map[(int)app->player.posY][next_x] == '1')
+	if (app->map[(int)app->player.posY][next_x] == '1'
+		|| app->map[(int)app->player.posY][next_x] == '2')
 		x_speed = 0.0;
 	app->player.posX += x_speed;
 	app->player.posY += y_speed;

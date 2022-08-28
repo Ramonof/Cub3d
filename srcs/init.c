@@ -6,7 +6,7 @@
 /*   By: etobias <etobias@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 18:21:38 by etobias           #+#    #+#             */
-/*   Updated: 2022/08/25 14:53:43 by etobias          ###   ########.fr       */
+/*   Updated: 2022/08/28 11:51:04 by etobias          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ void	init_app(t_app *app)
 	app->sprites[0].y = 5.0;
 	app->sprites[1].x = 14.0;
 	app->sprites[1].y = 5.0;
+	app->map[3][11] = '2';
 }
 
 static void	init_player(t_app *app)

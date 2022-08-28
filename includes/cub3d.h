@@ -17,7 +17,9 @@
 # define SPEED 0.2
 # define ROT_SPEED 0.06
 
-# define MAP_SET " 01NSEW"
+# ifndef MAP_SET
+#  define MAP_SET " 01NSEW"
+# endif
 
 typedef struct	s_data {
 	void	*img;

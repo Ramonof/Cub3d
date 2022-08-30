@@ -6,7 +6,7 @@
 /*   By: etobias <etobias@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 18:21:27 by etobias           #+#    #+#             */
-/*   Updated: 2022/08/28 12:02:57 by etobias          ###   ########.fr       */
+/*   Updated: 2022/08/30 12:56:59 by etobias          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,14 +25,14 @@ int	keyboard_input(int keycode, t_app *app)
 	{
 		int map_x = (int)(app->player.posX + app->player.dirX);
 		int map_y = (int)(app->player.posY + app->player.dirY);
-		if (app->map[map_y][map_x] == 'D')
+		if (app->map[map_y][map_x] == CH_CLOSED_DOOR)
 		{
-			app->map[map_y][map_x] = '3';
+			app->map[map_y][map_x] = CH_OPEN_DOOR;
 			app->update = true;
 		}
-		else if (app->map[map_y][map_x] == '3')
+		else if (app->map[map_y][map_x] == CH_OPEN_DOOR)
 		{
-			app->map[map_y][map_x] = 'D';
+			app->map[map_y][map_x] = CH_CLOSED_DOOR;
 			app->update = true;
 		}
 	}
@@ -62,11 +62,11 @@ static void	move_player(t_app *app, double x_dir, double y_dir)
 	y_speed = y_dir * SPEED;
 	next_x = (int)(app->player.posX + x_speed);
 	next_y = (int)(app->player.posY + y_speed);
-	if (app->map[next_y][(int)app->player.posX] == '1'
-		|| app->map[next_y][(int)app->player.posX] == 'D')
+	if (app->map[next_y][(int)app->player.posX] == CH_WALL
+		|| app->map[next_y][(int)app->player.posX] == CH_CLOSED_DOOR)
 		y_speed = 0.0;
-	if (app->map[(int)app->player.posY][next_x] == '1'
-		|| app->map[(int)app->player.posY][next_x] == 'D')
+	if (app->map[(int)app->player.posY][next_x] == CH_WALL
+		|| app->map[(int)app->player.posY][next_x] == CH_CLOSED_DOOR)
 		x_speed = 0.0;
 	app->player.posX += x_speed;
 	app->player.posY += y_speed;

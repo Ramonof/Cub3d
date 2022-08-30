@@ -10,6 +10,7 @@
 # include <stdio.h>
 # include <errno.h>
 # include <stdbool.h>
+# include <limits.h>
 
 # define WIDTH 1280
 # define HEIGHT 720
@@ -20,6 +21,10 @@
 # ifndef MAP_SET
 #  define MAP_SET " 01NSEW"
 # endif
+
+# define CH_WALL '1'
+# define CH_CLOSED_DOOR 'D'
+# define CH_OPEN_DOOR 'C'
 
 typedef struct	s_data {
 	void	*img;
@@ -39,7 +44,6 @@ typedef struct s_sprite
 {
 	double	x;
 	double	y;
-	int		texture_id;
 }	t_sprite;
 
 typedef struct	s_textures {
@@ -63,6 +67,8 @@ typedef struct	s_textures {
 	int		map_h;			// map height
 	void	*sprite_image;
 	char	*sprite_texture;
+	void	*door_image;
+	char	*door_texture;
 }	t_textures;
 
 typedef struct s_player
@@ -166,7 +172,7 @@ int		fill_r(t_color *info, char *line, int nbr);
 
 /* render_utils.c */
 double	get_wall_dist(t_ray *ray, int side);
-char    *get_texture(t_textures *textures, int side);
+char    *get_texture(t_app *app, t_ray *ray, int side);
 int		cast_ray(t_app *app, t_ray *ray);
 void	calc_ray_side_dist(t_player *player, t_ray *ray);
 

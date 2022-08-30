@@ -6,7 +6,7 @@
 /*   By: etobias <etobias@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 18:21:19 by etobias           #+#    #+#             */
-/*   Updated: 2022/08/28 12:05:43 by etobias          ###   ########.fr       */
+/*   Updated: 2022/08/30 13:34:53 by etobias          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static void		sort_sprites(int *sprite_order, double *sprite_distance, size_t spr
 			int temp = sprite_order[i - 1];
 			sprite_order[i - 1] = sprite_order[i];
 			sprite_order[i] = temp;
-			--i;
+			i = 0;
 		}
 		++i;
 	}
@@ -60,7 +60,7 @@ static void		draw_sprites(t_app *app)
 
 		int sprite_screen_x = (int)((WIDTH / 2) * (1 + transform_x / transform_y));
 
-		int sprite_height = abs((int)(HEIGHT / transform_y)); 
+		int sprite_height = abs((int)(HEIGHT / transform_y));
 
 		int draw_start_y = -sprite_height / 2 + HEIGHT / 2;
 		if (draw_start_y < 0)
@@ -119,21 +119,47 @@ static void	put_minimap_cell(t_app *app, int x, int y, int col)
 
 static void	draw_minimap(t_app *app)
 {
-	for (int y = 0; y < app->textures->map_h; y++)
+	int	x;
+	int	y;
+	int	max_x;
+	int	max_y;
+	
+	x = app->player.posX - 5;
+	if (x < 0)
+		x = 0;
+	y = app->player.posY - 5;
+	if (y < 0)
+		y = 0;
+	max_x = app->player.posX + 5;
+	if (max_x >= app->textures->map_w)
+		max_x = app->textures->map_w - 1;
+	max_y = app->player.posY + 5;
+	if (max_y >= app->textures->map_h)
+		max_y = app->textures->map_h - 1;
+	int j = 0;
+	while (y < max_y)
 	{
-		for (int x = 0; x < app->textures->map_w; x++)
+		x = app->player.posX - 5;
+		if (x < 0)
+			x = 0;
+		int i = 0;
+		while (x < max_x)
 		{
 			int col = 0xfad987;
-			if (app->map[y][x] == '1')
+			if (app->map[y][x] == CH_WALL)
 				col = 0xafc3c4;
-			else if (app->map[y][x] == 'D')
+			else if (app->map[y][x] == CH_CLOSED_DOOR)
 				col = 0xd481bc;
-			else if (app->map[y][x] == '3')
+			else if (app->map[y][x] == CH_OPEN_DOOR)
 				col = 0xe0a6d0;
-			put_minimap_cell(app, x, y, col);
+			put_minimap_cell(app, i, j, col);
+			++x;
+			++i;
 		}
+		++y;
+		++j;
 	}
-	put_minimap_cell(app, (int)app->player.posX, (int)app->player.posY, 0x05fa91);
+	//put_minimap_cell(app, 9, 9, 0x05fa91);
 }
 
 void	render(t_app *app)
@@ -190,7 +216,7 @@ static void	render_screen_line(t_app *app, t_ray *ray)
 	line_height = (int)(HEIGHT / perp_wall_dist);
 	ray->step = 1.0 * (float)app->textures->size / line_height;
 	ray->tex_pos = (ray->draw_start - HEIGHT / 2 + line_height / 2) * ray->step;
-	texture = get_texture(app->textures, side);
+	texture = get_texture(app, ray, side);
 	draw(app, ray, texture, tex_x);
 }
 

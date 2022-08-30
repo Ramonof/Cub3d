@@ -6,7 +6,7 @@
 /*   By: etobias <etobias@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 18:21:38 by etobias           #+#    #+#             */
-/*   Updated: 2022/08/28 12:20:30 by etobias          ###   ########.fr       */
+/*   Updated: 2022/08/30 13:06:25 by etobias          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,27 @@
 static void	init_player(t_app *app);
 static void	set_player_rot(t_app *app, char side);
 static void	load_textures(t_app *app);
+
+void	put_sprites(t_app *app)
+{
+	size_t	x;
+	size_t	sprite_index;
+
+	app->sprite_count = 1;
+	app->sprites = malloc(sizeof(t_sprite) * app->sprite_count);
+	x = app->player.posX - 1;
+	while (app->map[(size_t)(app->player.posY + 1.0)][(size_t)app->player.posX + x] == '0')
+		++x;
+	x--;
+	sprite_index = 0;
+	while (sprite_index < app->sprite_count)
+	{
+		app->sprites[sprite_index].x = (double)x - 0.5;
+		app->sprites[sprite_index].y = (size_t)(app->player.posY + 1.0);
+		++sprite_index;
+		++x;
+	}
+}
 
 void	init_app(t_app *app)
 {
@@ -29,12 +50,7 @@ void	init_app(t_app *app)
 	app->update = true;
 	init_player(app);
 	load_textures(app);
-	/*app->sprite_count = 2;
-	app->sprites = malloc(sizeof(t_sprite) * app->sprite_count);
-	app->sprites[0].x = 15.0;
-	app->sprites[0].y = 5.0;
-	app->sprites[1].x = 14.0;
-	app->sprites[1].y = 5.0;*/
+	put_sprites(app);
 }
 
 static void	init_player(t_app *app)
@@ -107,4 +123,6 @@ static void	load_textures(t_app *app)
 	textures->w_texture = mlx_get_data_addr(textures->w_image, &size, &size, &size);
 	textures->sprite_image = mlx_xpm_file_to_image(app->mlx, "textures/pillar.xpm", &size, &size);
 	textures->sprite_texture = mlx_get_data_addr(textures->sprite_image, &size, &size, &size);
+	textures->door_image = mlx_xpm_file_to_image(app->mlx, "textures/door.xpm", &size, &size);
+	textures->door_texture = mlx_get_data_addr(textures->door_image, &size, &size, &size);
 }

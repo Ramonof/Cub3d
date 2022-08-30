@@ -133,6 +133,7 @@ int 	mouse_move(int x, int y, t_app *app);
 /* utils.c */
 double  fclamp(double value, double min, double max);
 int		close_app(t_app *app);
+double	map(double old_min, double old_max, double new_min, double new_max, double value);
 
 /* errors.c*/
 void	error_exit(char *err);

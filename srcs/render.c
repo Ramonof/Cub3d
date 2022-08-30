@@ -6,7 +6,7 @@
 /*   By: etobias <etobias@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 18:21:19 by etobias           #+#    #+#             */
-/*   Updated: 2022/08/30 13:34:53 by etobias          ###   ########.fr       */
+/*   Updated: 2022/08/30 15:07:53 by etobias          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,14 +82,9 @@ static void		draw_sprites(t_app *app)
 		for (int stripe = draw_start_x; stripe < draw_end_x; stripe++)
 		{
 			int tex_x = (int)((stripe - (-sprite_width / 2 + sprite_screen_x)) * app->textures->size / sprite_width);
-			//the conditions in the if are:
-			//1) it's in front of camera plane so you don't see things behind you
-			//2) it's on the screen (left)
-			//3) it's on the screen (right)
-			//4) ZBuffer, with perpendicular distance
 			if (transform_y > 0 && stripe > 0 && stripe < WIDTH && transform_y < app->z_buffer[stripe])
 			{
-				for (int y = draw_start_y; y < draw_end_y; y++) //for every pixel of the current stripe
+				for (int y = draw_start_y; y < draw_end_y; y++)
 				{
 					int d = y - HEIGHT / 2 + sprite_height / 2;
 					int tex_y = (d * app->textures->size) / sprite_height;
@@ -117,33 +112,55 @@ static void	put_minimap_cell(t_app *app, int x, int y, int col)
 	}
 }
 
+static void	draw_minimap_frame(t_app *app, int map_radius)
+{
+	int	x;
+	int	y;
+
+	x = 0;
+	y = 0;
+	while (x < map_radius * 2 + 2)
+		put_minimap_cell(app, x++, y, 0x3275a8);
+	y = 1;
+	while (y < map_radius * 2)
+	{
+		put_minimap_cell(app, 0, y, 0x3275a8);
+		put_minimap_cell(app, map_radius * 2 + 1, y, 0x3275a8);
+		++y;
+	}
+	x = 0;
+	while (x < map_radius * 2 + 2)
+		put_minimap_cell(app, x++, y, 0x3275a8);
+}
+
 static void	draw_minimap(t_app *app)
 {
 	int	x;
 	int	y;
+	int	min_x;
+	int	min_y;
 	int	max_x;
 	int	max_y;
+	int	map_radius = 10;
 	
-	x = app->player.posX - 5;
-	if (x < 0)
-		x = 0;
-	y = app->player.posY - 5;
-	if (y < 0)
-		y = 0;
-	max_x = app->player.posX + 5;
+	min_x = app->player.posX - (map_radius - 1);
+	if (min_x < 0)
+		min_x = 0;
+	min_y = app->player.posY - (map_radius - 1);
+	if (min_y < 0)
+		min_y = 0;
+	max_x = app->player.posX + (map_radius);
 	if (max_x >= app->textures->map_w)
 		max_x = app->textures->map_w - 1;
-	max_y = app->player.posY + 5;
+	max_y = app->player.posY + (map_radius);
 	if (max_y >= app->textures->map_h)
 		max_y = app->textures->map_h - 1;
-	int j = 0;
-	while (y < max_y)
+	draw_minimap_frame(app, map_radius);
+	y = min_y;
+	while (y < max_y + 1)
 	{
-		x = app->player.posX - 5;
-		if (x < 0)
-			x = 0;
-		int i = 0;
-		while (x < max_x)
+		x = min_x;
+		while (x < max_x + 1)
 		{
 			int col = 0xfad987;
 			if (app->map[y][x] == CH_WALL)
@@ -152,14 +169,16 @@ static void	draw_minimap(t_app *app)
 				col = 0xd481bc;
 			else if (app->map[y][x] == CH_OPEN_DOOR)
 				col = 0xe0a6d0;
-			put_minimap_cell(app, i, j, col);
+			int	map_x = map(min_x, max_x, 1, max_x - min_x + 1, x);
+			int	map_y = map(min_y, max_y, 1, max_y - min_y + 1, y);
+			put_minimap_cell(app, map_x, map_y, col);
 			++x;
-			++i;
 		}
 		++y;
-		++j;
 	}
-	//put_minimap_cell(app, 9, 9, 0x05fa91);
+	int	map_x = map(min_x, max_x, 1, max_x - min_x + 1, app->player.posX);
+	int	map_y = map(min_y, max_y, 1, max_y - min_y + 1, app->player.posY);
+	put_minimap_cell(app, map_x, map_y, 0x05fa91);
 }
 
 void	render(t_app *app)

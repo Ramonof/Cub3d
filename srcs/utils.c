@@ -6,7 +6,7 @@
 /*   By: etobias <etobias@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 18:21:51 by etobias           #+#    #+#             */
-/*   Updated: 2022/08/19 15:37:54 by etobias          ###   ########.fr       */
+/*   Updated: 2022/08/30 14:27:01 by etobias          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,4 +26,12 @@ int	close_app(t_app *app)
 	mlx_destroy_window(app->mlx, app->mlx_win);
 	free_memory(app);
 	exit(1);
+}
+
+double	map(double old_min, double old_max, double new_min, double new_max, double value)
+{
+	double	fraction;
+
+	fraction = (value - old_min) / (old_max - old_min);
+	return (new_max - new_min) * fraction + new_min;
 }

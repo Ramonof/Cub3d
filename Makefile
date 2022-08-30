@@ -6,7 +6,7 @@
 #    By: etobias <etobias@student.21-school.ru>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/07/03 12:41:12 by mrolande          #+#    #+#              #
-#    Updated: 2022/08/19 15:26:27 by etobias          ###   ########.fr        #
+#    Updated: 2022/08/30 15:15:06 by etobias          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -73,7 +73,9 @@ SRC_FILES = main.c \
 			parse_utils.c \
 			parse_utils_utils.c \
 			render_utils.c \
-			free_memory.c
+			free_memory.c \
+			sprite_render.c \
+			minimap_render.c
 
 GNL_FILES = get_next_line.c \
 			get_next_line_utils.c

@@ -81,6 +81,16 @@ typedef struct s_player
 	double	planeY; // Y camera plane direction
 }	t_player;
 
+typedef struct	s_minimap
+{
+	int	min_x;
+	int	min_y;
+	int	max_x;
+	int	max_y;
+	int	radius;
+	int	scale;
+}	t_minimap;
+
 typedef struct s_app
 {
 	void		*mlx;			// mlx
@@ -94,6 +104,7 @@ typedef struct s_app
 	t_textures	*textures;
 	bool		update;			// flag to update the screen image
 	double		z_buffer[WIDTH];
+	t_minimap	minimap;
 }	t_app;
 
 typedef struct s_ray
@@ -179,5 +190,11 @@ void	calc_ray_side_dist(t_player *player, t_ray *ray);
 
 /* free_memory.c */
 void	free_memory(t_app *app);
+
+/* sprite_render.c */
+void    draw_sprites(t_app *app);
+
+/* minimap_render.c */
+void	draw_minimap(t_app *app);
 
 #endif

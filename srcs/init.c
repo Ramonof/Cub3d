@@ -6,7 +6,7 @@
 /*   By: etobias <etobias@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 18:21:38 by etobias           #+#    #+#             */
-/*   Updated: 2022/08/30 13:06:25 by etobias          ###   ########.fr       */
+/*   Updated: 2022/08/30 15:28:37 by etobias          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,8 @@ void	init_app(t_app *app)
 	app->prev_mouse_x = -1;
 	app->map = app->textures->map;
 	app->update = true;
+	app->minimap.radius = 10;
+	app->minimap.scale = 12;
 	init_player(app);
 	load_textures(app);
 	put_sprites(app);

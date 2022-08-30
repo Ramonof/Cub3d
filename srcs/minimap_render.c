@@ -14,10 +14,10 @@ void	draw_minimap(t_app *app)
 	calc_minimap_range(app);
 	draw_minimap_frame(app);
 	y = minimap->min_y;
-	while (y < minimap->max_y)
+	while (y < minimap->max_y + 1)
 	{
 		x = minimap->min_x;
-		while (x < minimap->max_x)
+		while (x < minimap->max_x + 1)
 		{
 			int col = 0xfad987;
 			if (app->map[y][x] == CH_WALL)
@@ -60,11 +60,29 @@ static void calc_minimap_range(t_app *app)
 		minimap->min_y = 0;
 	}
 	minimap->max_x = app->player.posX + minimap->radius + x_extent;
-	if (minimap->max_x >= app->textures->map_w)
+	if (minimap->max_x > app->textures->map_w - 1)
+	{
+		if (x_extent == 0)
+		{
+			x_extent = app->textures->map_w - minimap->max_x;
+			minimap->min_x += x_extent;
+			if (minimap->min_x < 0)
+				minimap->min_x = 0;
+		}
 		minimap->max_x = app->textures->map_w - 1;
+	}
 	minimap->max_y = app->player.posY + minimap->radius + y_extent;
-	if (minimap->max_y >= app->textures->map_h)
+	if (minimap->max_y > app->textures->map_h - 1)
+	{
+		if (y_extent == 0)
+		{
+			y_extent = app->textures->map_h - minimap->max_y;
+			minimap->min_y += y_extent;
+			if (minimap->min_y < 0)
+				minimap->min_y = 0;
+		}
 		minimap->max_y = app->textures->map_h - 1;
+	}
 }
 
 static void	draw_minimap_frame(t_app *app)

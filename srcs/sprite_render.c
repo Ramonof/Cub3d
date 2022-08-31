@@ -1,11 +1,26 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   sprite_render.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: etobias <etobias@student.21-school.ru>     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/09/01 00:55:29 by etobias           #+#    #+#             */
+/*   Updated: 2022/09/01 00:56:23 by etobias          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "cub3d.h"
 
 static void sort_sprites(int *sprite_order, double *sprite_distance, size_t sprite_count);
 
-void    draw_sprites(t_app *app)
+void	draw_sprites(t_app *app)
 {
-	int *sprite_order = malloc(app->sprite_count);
-	double *sprite_distance = malloc(app->sprite_count);
+	int	*sprite_order;
+	double	*sprite_distance;
+
+	sprite_order = malloc(sizeof(int) * app->sprite_count);
+	sprite_distance = malloc(sizeof(double) * app->sprite_count);
 
 	for (size_t i = 0; i < app->sprite_count; i++)
 	{
@@ -64,6 +79,8 @@ void    draw_sprites(t_app *app)
 			}
 		}
 	}
+	free(sprite_distance);
+	free(sprite_order);
 }
 
 static void		sort_sprites(int *sprite_order, double *sprite_distance, size_t sprite_count)

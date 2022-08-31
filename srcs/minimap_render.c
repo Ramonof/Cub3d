@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minimap_render.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: etobias <etobias@student.21-school.ru>     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/09/01 00:55:38 by etobias           #+#    #+#             */
+/*   Updated: 2022/09/01 00:57:34 by etobias          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "cub3d.h"
 
 static void calc_minimap_range(t_app *app);
@@ -6,9 +18,9 @@ static void	put_minimap_cell(t_app *app, int x, int y, int col);
 
 void	draw_minimap(t_app *app)
 {
-	int	x;
-	int	y;
-	t_minimap   *minimap;
+	int			x;
+	int			y;
+	t_minimap	*minimap;
 	
 	minimap = &app->minimap;
 	calc_minimap_range(app);
@@ -19,7 +31,7 @@ void	draw_minimap(t_app *app)
 		x = minimap->min_x;
 		while (x < minimap->max_x + 1)
 		{
-			int col = 0xfad987;
+			int col = 0xffffff;
 			if (app->map[y][x] == CH_WALL)
 				col = 0xafc3c4;
 			else if (app->map[y][x] == CH_CLOSED_DOOR)
@@ -42,41 +54,41 @@ static void calc_minimap_range(t_app *app)
 {
 	int			x_extent;
 	int			y_extent;
-	t_minimap   *minimap;
+	t_minimap	*minimap;
 	
 	minimap = &app->minimap;
 	x_extent = 0;
-	minimap->min_x = app->player.posX - minimap->radius;
+	minimap->min_x = (int)app->player.posX - minimap->radius;
 	if (minimap->min_x < 0)
 	{
 		x_extent = 0 - minimap->min_x;
 		minimap->min_x = 0;
 	}
 	y_extent = 0;
-	minimap->min_y = app->player.posY - minimap->radius;
+	minimap->min_y = (int)app->player.posY - minimap->radius;
 	if (minimap->min_y < 0)
 	{
 		y_extent = 0 - minimap->min_y;
 		minimap->min_y = 0;
 	}
-	minimap->max_x = app->player.posX + minimap->radius + x_extent;
+	minimap->max_x = (int)app->player.posX + minimap->radius + x_extent;
 	if (minimap->max_x > app->textures->map_w - 1)
 	{
 		if (x_extent == 0)
 		{
-			x_extent = app->textures->map_w - minimap->max_x;
+			x_extent = app->textures->map_w - 1 - minimap->max_x;
 			minimap->min_x += x_extent;
 			if (minimap->min_x < 0)
 				minimap->min_x = 0;
 		}
 		minimap->max_x = app->textures->map_w - 1;
 	}
-	minimap->max_y = app->player.posY + minimap->radius + y_extent;
+	minimap->max_y = (int)app->player.posY + minimap->radius + y_extent;
 	if (minimap->max_y > app->textures->map_h - 1)
 	{
 		if (y_extent == 0)
 		{
-			y_extent = app->textures->map_h - minimap->max_y;
+			y_extent = app->textures->map_h - 1 - minimap->max_y;
 			minimap->min_y += y_extent;
 			if (minimap->min_y < 0)
 				minimap->min_y = 0;
@@ -95,9 +107,12 @@ static void	draw_minimap_frame(t_app *app)
 	while (x < app->minimap.radius * 2 + 3)
 		put_minimap_cell(app, x++, y, 0x3275a8);
 	y = 1;
-	while (y < app->minimap.radius * 2)
+	while (y < app->minimap.radius * 2 + 2)
 	{
 		put_minimap_cell(app, 0, y, 0x3275a8);
+		x = 1;
+		while (x < app->minimap.radius * 2 + 2)
+			put_minimap_cell(app, x++, y, 0xffffff);
 		put_minimap_cell(app, app->minimap.radius * 2 + 2, y, 0x3275a8);
 		++y;
 	}

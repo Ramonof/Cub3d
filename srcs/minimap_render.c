@@ -49,14 +49,14 @@ static void calc_minimap_range(t_app *app)
 	minimap->min_x = app->player.posX - minimap->radius;
 	if (minimap->min_x < 0)
 	{
-		x_extent = -minimap->min_x;
+		x_extent = 0 - minimap->min_x;
 		minimap->min_x = 0;
 	}
 	y_extent = 0;
 	minimap->min_y = app->player.posY - minimap->radius;
 	if (minimap->min_y < 0)
 	{
-		y_extent = -minimap->min_y;
+		y_extent = 0 - minimap->min_y;
 		minimap->min_y = 0;
 	}
 	minimap->max_x = app->player.posX + minimap->radius + x_extent;
@@ -92,17 +92,17 @@ static void	draw_minimap_frame(t_app *app)
 
 	x = 0;
 	y = 0;
-	while (x < app->minimap.radius * 2 + 2)
+	while (x < app->minimap.radius * 2 + 3)
 		put_minimap_cell(app, x++, y, 0x3275a8);
 	y = 1;
 	while (y < app->minimap.radius * 2)
 	{
 		put_minimap_cell(app, 0, y, 0x3275a8);
-		put_minimap_cell(app, app->minimap.radius * 2 + 1, y, 0x3275a8);
+		put_minimap_cell(app, app->minimap.radius * 2 + 2, y, 0x3275a8);
 		++y;
 	}
 	x = 0;
-	while (x < app->minimap.radius * 2 + 2)
+	while (x < app->minimap.radius * 2 + 3)
 		put_minimap_cell(app, x++, y, 0x3275a8);
 }
 

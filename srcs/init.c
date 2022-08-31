@@ -6,7 +6,7 @@
 /*   By: etobias <etobias@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 18:21:38 by etobias           #+#    #+#             */
-/*   Updated: 2022/08/30 15:28:37 by etobias          ###   ########.fr       */
+/*   Updated: 2022/09/01 01:05:35 by etobias          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	put_sprites(t_app *app)
 	size_t	x;
 	size_t	sprite_index;
 
-	app->sprite_count = 1;
+	app->sprite_count = 3;
 	app->sprites = malloc(sizeof(t_sprite) * app->sprite_count);
 	x = app->player.posX - 1;
 	while (app->map[(size_t)(app->player.posY + 1.0)][(size_t)app->player.posX + x] == '0')

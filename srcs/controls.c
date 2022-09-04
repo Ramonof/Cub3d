@@ -6,7 +6,7 @@
 /*   By: etobias <etobias@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 18:21:27 by etobias           #+#    #+#             */
-/*   Updated: 2022/08/30 12:56:59 by etobias          ###   ########.fr       */
+/*   Updated: 2022/09/04 20:16:43 by etobias          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,13 @@
 
 static void	movement(t_app *app, int keycode);
 static void	move_player(t_app *app, double x_dir, double y_dir);
+static void	key_rotation(t_app *app, int keycode);
 static void	rotate_camera(t_app *app, int direction);
 
 int	keyboard_input(int keycode, t_app *app)
 {
 	movement(app, keycode);
+	key_rotation(app, keycode);
 	if (keycode == ESC_KEY)
 		close_app(app);
 	if (keycode == 101)
@@ -71,6 +73,14 @@ static void	move_player(t_app *app, double x_dir, double y_dir)
 	app->player.posX += x_speed;
 	app->player.posY += y_speed;
 	app->update = true;
+}
+
+static void	key_rotation(t_app *app, int keycode)
+{
+	if (keycode == KEY_LEFT)
+		rotate_camera(app, -1);
+	else if (keycode == KEY_RIGHT)
+		rotate_camera(app, 1);
 }
 
 int	mouse_move(int x, int y, t_app *app)

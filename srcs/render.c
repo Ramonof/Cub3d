@@ -6,7 +6,7 @@
 /*   By: etobias <etobias@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 18:21:19 by etobias           #+#    #+#             */
-/*   Updated: 2022/08/30 15:14:40 by etobias          ###   ########.fr       */
+/*   Updated: 2022/09/04 20:07:35 by etobias          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,10 +107,10 @@ static void	draw_ceil_floor(t_app *app, t_ray *ray)
 	color = app->textures->c;
 	c = create_argb(255, color.r, color.g, color.b);
 	while (screen_y < ray->draw_start)
-		my_mlx_pixel_put(&app->img, ray->screen_x, ++screen_y, c);
+		my_mlx_pixel_put(&app->img, ray->screen_x, screen_y++, c);
 	screen_y = ray->draw_end + 1;
 	color = app->textures->f;
 	c = create_argb(255, color.r, color.g, color.b);
 	while (screen_y < HEIGHT)
-		my_mlx_pixel_put(&app->img, ray->screen_x, ++screen_y, c);
+		my_mlx_pixel_put(&app->img, ray->screen_x, screen_y++, c);
 }

@@ -12,6 +12,9 @@
 # include <stdbool.h>
 # include <limits.h>
 
+# define KEY_LEFT 65361
+# define KEY_RIGHT 65363
+
 # define WIDTH 1280
 # define HEIGHT 720
 

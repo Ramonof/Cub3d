@@ -14,6 +14,7 @@
 
 # define KEY_LEFT 65361
 # define KEY_RIGHT 65363
+# define E_KEY 101
 
 # define WIDTH 1280
 # define HEIGHT 720
@@ -24,6 +25,9 @@
 # ifndef MAP_SET
 #  define MAP_SET " 01NSEW"
 # endif
+
+# define SPRITE_PATH "textures/pillar.xpm"
+# define DOOR_PATH "textures/door.xpm"
 
 # define CH_WALL '1'
 # define CH_CLOSED_DOOR 'D'
@@ -92,7 +96,28 @@ typedef struct	s_minimap
 	int	max_y;
 	int	radius;
 	int	scale;
+	int	map_x;
+	int	map_y;
 }	t_minimap;
+
+typedef struct s_sprites
+{
+	size_t		spr_count;
+	t_sprite	*sprites;
+	int			*spr_order;
+	double		*spr_distance;
+	double		transform_y;
+	int			spr_screen_x;
+	int			sprite_height;
+	int			draw_start_y;
+	int			draw_end_y;
+	int			draw_start_x;
+	int			draw_end_x;
+	int			spr_width;
+	int			tex_x;
+	int			stripe;
+}	t_sprites;
+
 
 typedef struct s_app
 {
@@ -101,8 +126,7 @@ typedef struct s_app
 	t_data		img;			// image data
 	t_player	player;			// player data
 	char		**map;			// level map
-	size_t		sprite_count;
-	t_sprite	*sprites;
+	t_sprites	sprites_data;
 	int			prev_mouse_x;	// prev mouse X position
 	t_textures	*textures;
 	bool		update;			// flag to update the screen image
@@ -197,7 +221,20 @@ void	free_memory(t_app *app);
 /* sprite_render.c */
 void    draw_sprites(t_app *app);
 
+/* sprite_render_utils.c */
+void	sort_sprites(t_sprites *spr_data);
+void	calc_sprite_data(t_player *player, t_sprites *sprites_data, size_t i);
+void    calc_sprite_borders(t_sprites *sprites_data);
+
 /* minimap_render.c */
 void	draw_minimap(t_app *app);
+
+/* controls_utils.c */
+void    door_interaction(t_app *app);
+void	move_player(t_app *app, double x_dir, double y_dir);
+void	rotate_camera(t_app *app, int direction);
+
+/* init_utils.c */
+void    load_wall_textures(t_app *app);
 
 #endif

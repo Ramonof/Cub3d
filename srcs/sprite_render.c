@@ -6,97 +6,96 @@
 /*   By: etobias <etobias@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/01 00:55:29 by etobias           #+#    #+#             */
-/*   Updated: 2022/09/01 00:56:23 by etobias          ###   ########.fr       */
+/*   Updated: 2022/09/05 23:18:51 by etobias          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-static void sort_sprites(int *sprite_order, double *sprite_distance, size_t sprite_count);
+static void	init_sprite_order(t_player *player, t_sprites *sprites_data);
+static void	get_tex_x(t_sprites *spr_data, t_textures *textures);
+static void	draw_sprite_stripe(t_app *app);
+static void	put_sprite_pixel(t_app *app, int tex_y, int y);
 
 void	draw_sprites(t_app *app)
 {
-	int	*sprite_order;
-	double	*sprite_distance;
+	size_t		i;
+	t_sprites	*spr_data;
 
-	sprite_order = malloc(sizeof(int) * app->sprite_count);
-	sprite_distance = malloc(sizeof(double) * app->sprite_count);
-
-	for (size_t i = 0; i < app->sprite_count; i++)
+	spr_data = &app->sprites_data;
+	init_sprite_order(&app->player, spr_data);
+	sort_sprites(spr_data);
+	i = 0;
+	while (i < spr_data->spr_count)
 	{
-		sprite_order[i] = i;
-		sprite_distance[i] = (app->player.posX - app->sprites[i].x) * (app->player.posX - app->sprites[i].x)
-			+ (app->player.posY - app->sprites[i].y) * (app->player.posY - app->sprites[i].y);
-	}
-	sort_sprites(sprite_order, sprite_distance, app->sprite_count);
-
-	for (size_t i = 0; i < app->sprite_count; i++)
-	{
-		double sprite_x = app->sprites[sprite_order[i]].x - app->player.posX;
-		double sprite_y = app->sprites[sprite_order[i]].y - app->player.posY;
-
-		double inv_det = 1.0 / (app->player.planeX * app->player.dirY - app->player.planeY * app->player.dirX);
-		
-		double transform_x = inv_det * (app->player.dirY * sprite_x - app->player.dirX * sprite_y);
-		double transform_y = inv_det * (-app->player.planeY * sprite_x + app->player.planeX * sprite_y);
-
-		int sprite_screen_x = (int)((WIDTH / 2) * (1 + transform_x / transform_y));
-
-		int sprite_height = abs((int)(HEIGHT / transform_y));
-
-		int draw_start_y = -sprite_height / 2 + HEIGHT / 2;
-		if (draw_start_y < 0)
-			draw_start_y = 0;
-		
-		int draw_end_y = sprite_height / 2 + HEIGHT / 2;
-		if (draw_end_y >= HEIGHT)
-			draw_end_y = HEIGHT - 1;
-
-		int sprite_width = abs((int)(HEIGHT / transform_y));
-		int draw_start_x = -sprite_width / 2 + sprite_screen_x;
-		if (draw_start_x < 0)
-			draw_start_x = 0;
-
-		int draw_end_x = sprite_width / 2 + sprite_screen_x;
-		if (draw_end_x >= WIDTH)
-			draw_end_x = WIDTH - 1;
-
-		for (int stripe = draw_start_x; stripe < draw_end_x; stripe++)
+		calc_sprite_data(&app->player, spr_data, i);
+		calc_sprite_borders(spr_data);
+		spr_data->stripe = spr_data->draw_start_x;
+		while (spr_data->stripe < spr_data->draw_end_x)
 		{
-			int tex_x = (int)((stripe - (-sprite_width / 2 + sprite_screen_x)) * app->textures->size / sprite_width);
-			if (transform_y > 0 && stripe > 0 && stripe < WIDTH && transform_y < app->z_buffer[stripe])
-			{
-				for (int y = draw_start_y; y < draw_end_y; y++)
-				{
-					int d = y - HEIGHT / 2 + sprite_height / 2;
-					int tex_y = (d * app->textures->size) / sprite_height;
-					unsigned int ind = app->textures->size * tex_y + tex_x;
-					unsigned int *p = (unsigned int *)app->textures->sprite_texture;
-					int col = mlx_get_color_value(app->mlx, p[ind]);
-					if (col != 0)
-						my_mlx_pixel_put(&app->img, stripe, y, col);
-				}
-			}
-		}
-	}
-	free(sprite_distance);
-	free(sprite_order);
-}
-
-static void		sort_sprites(int *sprite_order, double *sprite_distance, size_t sprite_count)
-{
-	size_t	i;
-
-	i = 1;
-	while (i < sprite_count)
-	{
-		if (sprite_distance[sprite_order[i - 1]] < sprite_distance[sprite_order[i]])
-		{
-			int temp = sprite_order[i - 1];
-			sprite_order[i - 1] = sprite_order[i];
-			sprite_order[i] = temp;
-			i = 0;
+			get_tex_x(spr_data, app->textures);
+			if (spr_data->transform_y > 0 && spr_data->stripe > 0
+				&& spr_data->stripe < WIDTH
+				&& spr_data->transform_y < app->z_buffer[spr_data->stripe])
+				draw_sprite_stripe(app);
+			++spr_data->stripe;
 		}
 		++i;
 	}
+	free(spr_data->spr_distance);
+	free(spr_data->spr_order);
+}
+
+static void	init_sprite_order(t_player *player, t_sprites *spr_data)
+{
+	size_t	i;
+
+	spr_data->spr_order = malloc(sizeof(int) * spr_data->spr_count);
+	spr_data->spr_distance = malloc(sizeof(double) * spr_data->spr_count);
+	i = 0;
+	while (i < spr_data->spr_count)
+	{
+		spr_data->spr_order[i] = i;
+		spr_data->spr_distance[i] = (player->posX - spr_data->sprites[i].x)
+			* (player->posX - spr_data->sprites[i].x)
+			+ (player->posY - spr_data->sprites[i].y)
+			* (player->posY - spr_data->sprites[i].y);
+		++i;
+	}
+}
+
+static void	get_tex_x(t_sprites *spr_data, t_textures *textures)
+{
+	spr_data->tex_x = (int)((spr_data->stripe
+				- (-spr_data->spr_width / 2 + spr_data->spr_screen_x))
+			* textures->size / spr_data->spr_width);
+}
+
+static void	draw_sprite_stripe(t_app *app)
+{
+	int	y;
+	int	d;
+	int	tex_y;
+
+	y = app->sprites_data.draw_start_y;
+	while (y < app->sprites_data.draw_end_y)
+	{
+		d = y - HEIGHT / 2 + app->sprites_data.sprite_height / 2;
+		tex_y = (d * app->textures->size) / app->sprites_data.sprite_height;
+		put_sprite_pixel(app, tex_y, y);
+		++y;
+	}
+}
+
+static void	put_sprite_pixel(t_app *app, int tex_y, int y)
+{
+	unsigned int	ind;
+	unsigned int	*p;
+	int				col;
+
+	ind = app->textures->size * tex_y + app->sprites_data.tex_x;
+	p = (unsigned int *)app->textures->sprite_texture;
+	col = mlx_get_color_value(app->mlx, p[ind]);
+	if (col != 0)
+		my_mlx_pixel_put(&app->img, app->sprites_data.stripe, y, col);
 }

@@ -6,7 +6,7 @@
 #    By: etobias <etobias@student.21-school.ru>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/07/03 12:41:12 by mrolande          #+#    #+#              #
-#    Updated: 2022/08/30 15:15:06 by etobias          ###   ########.fr        #
+#    Updated: 2022/09/05 23:41:13 by etobias          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -59,22 +59,25 @@ GNL_DIR := ./gnl/
 OBJ_DIR	= ./obj/
 
 SRC_FILES = main.c \
+			init.c \
+			init_utils.c \
+			utils.c \
 			render.c \
+			render_utils.c \
 			graphics_utils.c \
 			controls.c \
-			utils.c \
+			controls_utils.c \
 			errors.c \
 			parser.c \
-			map_parser.c \
-			textures_utils.c \
-			init.c \
-			get_map.c \
-			check_map.c \
 			parse_utils.c \
 			parse_utils_utils.c \
-			render_utils.c \
+			map_parser.c \
+			get_map.c \
+			check_map.c \
+			textures_utils.c \
 			free_memory.c \
 			sprite_render.c \
+			sprite_render_utils.c \
 			minimap_render.c
 
 GNL_FILES = get_next_line.c \

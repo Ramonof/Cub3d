@@ -6,7 +6,7 @@
 /*   By: etobias <etobias@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 18:21:51 by etobias           #+#    #+#             */
-/*   Updated: 2022/08/30 14:27:01 by etobias          ###   ########.fr       */
+/*   Updated: 2022/09/05 23:29:23 by etobias          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,5 +33,5 @@ double	map(double old_min, double old_max, double new_min, double new_max, doubl
 	double	fraction;
 
 	fraction = (value - old_min) / (old_max - old_min);
-	return (new_max - new_min) * fraction + new_min;
+	return ((new_max - new_min) * fraction + new_min);
 }

@@ -40,6 +40,8 @@ void	put_sprites(t_app *app)
 void	init_app(t_app *app)
 {
 	app->mlx = mlx_init();
+	if (!app->mlx)
+		error_exit("MLX: failed to initiate");
 	app->mlx_win = mlx_new_window(app->mlx, WIDTH, HEIGHT, "Cub3D");
 	app->img.img = mlx_new_image(app->mlx, WIDTH, HEIGHT);
 	app->img.addr = mlx_get_data_addr(app->img.img, &app->img.bits_per_pixel,

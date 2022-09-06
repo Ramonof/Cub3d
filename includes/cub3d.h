@@ -6,7 +6,7 @@
 /*   By: etobias <etobias@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 10:21:59 by mrolande          #+#    #+#             */
-/*   Updated: 2022/09/06 22:25:47 by etobias          ###   ########.fr       */
+/*   Updated: 2022/09/07 02:24:04 by etobias          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,8 +92,8 @@ typedef struct	s_textures {
 
 typedef struct s_player
 {
-	double	posX;	// X position
-	double	posY;	// Y position
+	double	pos_x;	// X position
+	double	pos_y;	// Y position
 	double	dirX;	// X look direction
 	double	dirY;	// Y look direction
 	double	planeX; // X camera plane direction
@@ -110,8 +110,6 @@ typedef struct	s_minimap
 	int	scale;
 	int	map_x;
 	int	map_y;
-	int	x_extent;
-	int	y_extent;
 }	t_minimap;
 
 typedef struct s_sprites

@@ -6,7 +6,7 @@
 /*   By: etobias <etobias@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/01 00:55:29 by etobias           #+#    #+#             */
-/*   Updated: 2022/09/05 23:18:51 by etobias          ###   ########.fr       */
+/*   Updated: 2022/09/07 02:17:17 by etobias          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,10 +56,10 @@ static void	init_sprite_order(t_player *player, t_sprites *spr_data)
 	while (i < spr_data->spr_count)
 	{
 		spr_data->spr_order[i] = i;
-		spr_data->spr_distance[i] = (player->posX - spr_data->sprites[i].x)
-			* (player->posX - spr_data->sprites[i].x)
-			+ (player->posY - spr_data->sprites[i].y)
-			* (player->posY - spr_data->sprites[i].y);
+		spr_data->spr_distance[i] = (player->pos_x - spr_data->sprites[i].x)
+			* (player->pos_x - spr_data->sprites[i].x)
+			+ (player->pos_y - spr_data->sprites[i].y)
+			* (player->pos_y - spr_data->sprites[i].y);
 		++i;
 	}
 }

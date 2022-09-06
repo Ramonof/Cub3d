@@ -6,7 +6,7 @@
 /*   By: etobias <etobias@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 18:21:19 by etobias           #+#    #+#             */
-/*   Updated: 2022/09/07 01:30:42 by etobias          ###   ########.fr       */
+/*   Updated: 2022/09/07 02:17:17 by etobias          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,8 @@ static void	init_ray(t_player *player, t_ray *ray, int screen_x)
 	camera_x = 2 * ray->screen_x / (double)WIDTH - 1;
 	ray->ray_dir_x = player->dirX + player->planeX * camera_x;
 	ray->ray_dir_y = player->dirY + player->planeY * camera_x;
-	ray->map_x = (int)player->posX;
-	ray->map_y = (int)player->posY;
+	ray->map_x = (int)player->pos_x;
+	ray->map_y = (int)player->pos_y;
 	if (ray->ray_dir_x == 0)
 		ray->delta_dist_x = INFINITY;
 	else

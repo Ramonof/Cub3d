@@ -6,7 +6,7 @@
 /*   By: etobias <etobias@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/05 23:27:08 by etobias           #+#    #+#             */
-/*   Updated: 2022/09/05 23:27:23 by etobias          ###   ########.fr       */
+/*   Updated: 2022/09/07 02:17:17 by etobias          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@ void	door_interaction(t_app *app)
 	int	map_x;
 	int	map_y;
 
-	map_x = (int)(app->player.posX + app->player.dirX);
-	map_y = (int)(app->player.posY + app->player.dirY);
+	map_x = (int)(app->player.pos_x + app->player.dirX);
+	map_y = (int)(app->player.pos_y + app->player.dirY);
 	if (app->map[map_y][map_x] == CH_CLOSED_DOOR)
 	{
 		app->map[map_y][map_x] = CH_OPEN_DOOR;
@@ -40,16 +40,16 @@ void	move_player(t_app *app, double x_dir, double y_dir)
 
 	x_speed = x_dir * SPEED;
 	y_speed = y_dir * SPEED;
-	next_x = (int)(app->player.posX + x_speed);
-	next_y = (int)(app->player.posY + y_speed);
-	if (app->map[next_y][(int)app->player.posX] == CH_WALL
-		|| app->map[next_y][(int)app->player.posX] == CH_CLOSED_DOOR)
+	next_x = (int)(app->player.pos_x + x_speed);
+	next_y = (int)(app->player.pos_y + y_speed);
+	if (app->map[next_y][(int)app->player.pos_x] == CH_WALL
+		|| app->map[next_y][(int)app->player.pos_x] == CH_CLOSED_DOOR)
 		y_speed = 0.0;
-	if (app->map[(int)app->player.posY][next_x] == CH_WALL
-		|| app->map[(int)app->player.posY][next_x] == CH_CLOSED_DOOR)
+	if (app->map[(int)app->player.pos_y][next_x] == CH_WALL
+		|| app->map[(int)app->player.pos_y][next_x] == CH_CLOSED_DOOR)
 		x_speed = 0.0;
-	app->player.posX += x_speed;
-	app->player.posY += y_speed;
+	app->player.pos_x += x_speed;
+	app->player.pos_y += y_speed;
 	app->update = true;
 }
 

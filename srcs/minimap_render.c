@@ -6,7 +6,7 @@
 /*   By: etobias <etobias@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/01 00:55:38 by etobias           #+#    #+#             */
-/*   Updated: 2022/09/07 01:33:10 by etobias          ###   ########.fr       */
+/*   Updated: 2022/09/07 02:47:23 by etobias          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,8 @@ void	draw_minimap(t_app *app)
 		}
 		++y;
 	}
-	minimap->map_x = map_coords(minimap, app->player.posX);
-	minimap->map_y = map_coords(minimap, app->player.posY);
+	minimap->map_x = map_coords(minimap, app->player.pos_x);
+	minimap->map_y = map_coords(minimap, app->player.pos_y);
 	put_minimap_cell(app, minimap->map_x, minimap->map_y, 0x05fa91);
 }
 
@@ -102,5 +102,7 @@ static int	map_coords(t_minimap *minimap, double value)
 
 	new_max = minimap->max_x - minimap->min_x + 1;
 	fraction = (value - minimap->min_x) / (minimap->max_x - minimap->min_x);
+	if (fraction < 0)
+		fraction = 0;
 	return ((new_max - 1) * fraction + 1);
 }

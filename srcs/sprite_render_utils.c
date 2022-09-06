@@ -6,7 +6,7 @@
 /*   By: etobias <etobias@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/05 22:52:48 by etobias           #+#    #+#             */
-/*   Updated: 2022/09/05 23:15:43 by etobias          ###   ########.fr       */
+/*   Updated: 2022/09/07 02:17:17 by etobias          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,8 @@ void	calc_sprite_data(t_player *player, t_sprites *spr_data, size_t i)
 	double	inv_det;
 	double	transform_x;
 
-	sprite_x = spr_data->sprites[spr_data->spr_order[i]].x - player->posX;
-	sprite_y = spr_data->sprites[spr_data->spr_order[i]].y - player->posY;
+	sprite_x = spr_data->sprites[spr_data->spr_order[i]].x - player->pos_x;
+	sprite_y = spr_data->sprites[spr_data->spr_order[i]].y - player->pos_y;
 	inv_det = 1.0 / (player->planeX * player->dirY
 			- player->planeY * player->dirX);
 	transform_x = inv_det * (player->dirY * sprite_x - player->dirX * sprite_y);

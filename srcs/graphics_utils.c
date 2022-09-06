@@ -6,7 +6,7 @@
 /*   By: etobias <etobias@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 18:21:35 by etobias           #+#    #+#             */
-/*   Updated: 2022/08/16 22:33:01 by etobias          ###   ########.fr       */
+/*   Updated: 2022/09/07 02:17:17 by etobias          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,9 @@ int	get_text_x(t_app *app, t_ray *ray, int side, double wall_dist)
 	int		tex_x;
 
 	if (!(side % 2))
-		hit_x = app->player.posY + wall_dist * ray->ray_dir_y;
+		hit_x = app->player.pos_y + wall_dist * ray->ray_dir_y;
 	else
-		hit_x = app->player.posX + wall_dist * ray->ray_dir_x;
+		hit_x = app->player.pos_x + wall_dist * ray->ray_dir_x;
 	hit_x -= floor(hit_x);
 	tex_x = (int)(hit_x * (float)app->textures->size);
 	return (tex_x);

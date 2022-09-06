@@ -6,7 +6,7 @@
 /*   By: etobias <etobias@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 18:21:38 by etobias           #+#    #+#             */
-/*   Updated: 2022/09/07 01:32:36 by etobias          ###   ########.fr       */
+/*   Updated: 2022/09/07 02:17:17 by etobias          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	init_app(t_app *app)
 	app->map = app->textures->map;
 	app->update = true;
 	app->minimap.radius = 10;
-	app->minimap.scale = 12;
+	app->minimap.scale = 10;
 	init_player(app);
 	load_textures(app);
 	put_sprites(app);
@@ -52,13 +52,13 @@ static void	put_sprites(t_app *app)
 	spr_data->sprites = malloc(sizeof(t_sprite) * spr_data->spr_count);
 	if (!spr_data->sprites)
 		error_exit("MALLOC: sprites");
-	x = app->player.posX - 1;
+	x = app->player.pos_x - 1;
 	x--;
 	sprite_index = 0;
 	while (sprite_index < spr_data->spr_count)
 	{
 		spr_data->sprites[sprite_index].x = (double)x - 0.5;
-		spr_data->sprites[sprite_index].y = (size_t)(app->player.posY + 1.0);
+		spr_data->sprites[sprite_index].y = (size_t)(app->player.pos_y + 1.0);
 		++sprite_index;
 		++x;
 	}
@@ -79,8 +79,8 @@ static void	init_player(t_app *app)
 				|| app->map[y][x] == 'E' || app->map[y][x] == 'W')
 			{
 				set_player_rot(app, app->map[y][x]);
-				app->player.posX = x + 0.5;
-				app->player.posY = y + 0.5;
+				app->player.pos_x = x + 0.5;
+				app->player.pos_y = y + 0.5;
 				return ;
 			}
 			x++;

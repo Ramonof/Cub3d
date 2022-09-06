@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mrolande <mrolande@student.21-school.ru    +#+  +:+       +#+        */
+/*   By: etobias <etobias@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 10:21:59 by mrolande          #+#    #+#             */
-/*   Updated: 2022/09/06 10:21:59 by mrolande         ###   ########.fr       */
+/*   Updated: 2022/09/06 22:25:47 by etobias          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,6 +110,8 @@ typedef struct	s_minimap
 	int	scale;
 	int	map_x;
 	int	map_y;
+	int	x_extent;
+	int	y_extent;
 }	t_minimap;
 
 typedef struct s_sprites
@@ -183,7 +185,6 @@ int 	mouse_move(int x, int y, t_app *app);
 /* utils.c */
 double  fclamp(double value, double min, double max);
 int		close_app(t_app *app);
-double	map(double old_min, double old_max, double new_min, double new_max, double value);
 
 /* errors.c*/
 void	error_exit(char *err);
@@ -248,5 +249,10 @@ void	rotate_camera(t_app *app, int direction);
 
 /* init_utils.c */
 void    load_wall_textures(t_app *app);
+
+/* minimap_render_utils.c */
+void	calc_x_range(t_app *app);
+void	calc_y_range(t_app *app);
+int		get_minimap_color(t_app *app, int x, int y);
 
 #endif

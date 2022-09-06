@@ -6,7 +6,7 @@
 /*   By: etobias <etobias@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/01 00:55:38 by etobias           #+#    #+#             */
-/*   Updated: 2022/09/05 23:40:44 by etobias          ###   ########.fr       */
+/*   Updated: 2022/09/06 22:26:05 by etobias          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 static void	calc_minimap_range(t_app *app);
 static void	draw_minimap_frame(t_app *app);
 static void	put_minimap_cell(t_app *app, int x, int y, int col);
+static int	map_coords(t_minimap *minimap, double value);
 
 void	draw_minimap(t_app *app)
 {
@@ -32,70 +33,23 @@ void	draw_minimap(t_app *app)
 		x = minimap->min_x;
 		while (x < minimap->max_x + 1)
 		{
-			col = 0xffffff;
-			if (app->map[y][x] == CH_WALL)
-				col = 0xafc3c4;
-			else if (app->map[y][x] == CH_CLOSED_DOOR)
-				col = 0xd481bc;
-			else if (app->map[y][x] == CH_OPEN_DOOR)
-				col = 0xe0a6d0;
-			minimap->map_x = map(minimap->min_x, minimap->max_x, 1, minimap->max_x - minimap->min_x + 1, x);
-			minimap->map_y = map(minimap->min_y, minimap->max_y, 1, minimap->max_y - minimap->min_y + 1, y);
+			col = get_minimap_color(app, x, y);
+			minimap->map_x = map_coords(minimap, x);
+			minimap->map_y = map_coords(minimap, y);
 			put_minimap_cell(app, minimap->map_x, minimap->map_y, col);
 			++x;
 		}
 		++y;
 	}
-	minimap->map_x = map(minimap->min_x, minimap->max_x, 1, minimap->max_x - minimap->min_x + 1, app->player.posX);
-	minimap->map_y = map(minimap->min_y, minimap->max_y, 1, minimap->max_y - minimap->min_y + 1, app->player.posY);
+	minimap->map_x = map_coords(minimap, app->player.posX);
+	minimap->map_y = map_coords(minimap, app->player.posY);
 	put_minimap_cell(app, minimap->map_x, minimap->map_y, 0x05fa91);
 }
 
 static void	calc_minimap_range(t_app *app)
 {
-	int			x_extent;
-	int			y_extent;
-	t_minimap	*minimap;
-
-	minimap = &app->minimap;
-	x_extent = 0;
-	minimap->min_x = (int)app->player.posX - minimap->radius;
-	if (minimap->min_x < 0)
-	{
-		x_extent = 0 - minimap->min_x;
-		minimap->min_x = 0;
-	}
-	y_extent = 0;
-	minimap->min_y = (int)app->player.posY - minimap->radius;
-	if (minimap->min_y < 0)
-	{
-		y_extent = 0 - minimap->min_y;
-		minimap->min_y = 0;
-	}
-	minimap->max_x = (int)app->player.posX + minimap->radius + x_extent;
-	if (minimap->max_x > app->textures->map_w - 1)
-	{
-		if (x_extent == 0)
-		{
-			x_extent = app->textures->map_w - 1 - minimap->max_x;
-			minimap->min_x += x_extent;
-			if (minimap->min_x < 0)
-				minimap->min_x = 0;
-		}
-		minimap->max_x = app->textures->map_w - 1;
-	}
-	minimap->max_y = (int)app->player.posY + minimap->radius + y_extent;
-	if (minimap->max_y > app->textures->map_h - 1)
-	{
-		if (y_extent == 0)
-		{
-			y_extent = app->textures->map_h - 1 - minimap->max_y;
-			minimap->min_y += y_extent;
-			if (minimap->min_y < 0)
-				minimap->min_y = 0;
-		}
-		minimap->max_y = app->textures->map_h - 1;
-	}
+	calc_x_range(app);
+	calc_y_range(app);
 }
 
 static void	draw_minimap_frame(t_app *app)
@@ -133,9 +87,20 @@ static void	put_minimap_cell(t_app *app, int x, int y, int col)
 		j = 0;
 		while (j < app->minimap.scale)
 		{
-			my_mlx_pixel_put(&app->img, x * app->minimap.scale + j, y * app->minimap.scale + i, col);
+			my_mlx_pixel_put(&app->img, x * app->minimap.scale + j,
+				y * app->minimap.scale + i, col);
 			++j;
 		}
 		++i;
 	}
+}
+
+static int	map_coords(t_minimap *minimap, double value)
+{
+	double	fraction;
+	int		new_max;
+
+	new_max = minimap->max_x - minimap->min_x + 1;
+	fraction = (value - minimap->min_x) / (minimap->max_x - minimap->min_x);
+	return ((new_max - 1) * fraction + 1);
 }

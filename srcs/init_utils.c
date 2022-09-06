@@ -6,11 +6,13 @@
 /*   By: etobias <etobias@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/05 23:36:40 by etobias           #+#    #+#             */
-/*   Updated: 2022/09/05 23:41:27 by etobias          ###   ########.fr       */
+/*   Updated: 2022/09/06 22:29:56 by etobias          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+static void	load_east_west(t_app *app, t_textures *textures);
 
 void	load_wall_textures(t_app *app)
 {
@@ -31,6 +33,14 @@ void	load_wall_textures(t_app *app)
 		error_exit("MLX: Bad wall S");
 	textures->s_texture = mlx_get_data_addr(textures->s_image,
 			&size, &size, &size);
+	load_east_west(app, textures);
+}
+
+static void	load_east_west(t_app *app, t_textures *textures)
+{
+	int	size;
+
+	size = textures->size;
 	textures->e_image = mlx_xpm_file_to_image(app->mlx,
 			textures->ea, &size, &size);
 	if (!textures->n_image)

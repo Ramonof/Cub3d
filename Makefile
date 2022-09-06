@@ -6,7 +6,7 @@
 #    By: etobias <etobias@student.21-school.ru>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/07/03 12:41:12 by mrolande          #+#    #+#              #
-#    Updated: 2022/09/05 23:41:13 by etobias          ###   ########.fr        #
+#    Updated: 2022/09/06 22:18:02 by etobias          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -79,7 +79,8 @@ SRC_FILES = main.c \
 			free_memory.c \
 			sprite_render.c \
 			sprite_render_utils.c \
-			minimap_render.c
+			minimap_render.c \
+			minimap_render_utils.c
 
 SRC_FILES_B = main.c \
 			init.c \
@@ -101,7 +102,8 @@ SRC_FILES_B = main.c \
 			free_memory.c \
 			sprite_render.c \
 			sprite_render_utils.c \
-			minimap_render.c
+			minimap_render.c \
+			minimap_render_utils.c
 
 GNL_FILES = get_next_line.c \
 			get_next_line_utils.c

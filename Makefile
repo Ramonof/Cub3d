@@ -6,7 +6,7 @@
 #    By: etobias <etobias@student.21-school.ru>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/07/03 12:41:12 by mrolande          #+#    #+#              #
-#    Updated: 2022/09/06 22:18:02 by etobias          ###   ########.fr        #
+#    Updated: 2022/09/07 01:25:50 by etobias          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,6 +16,11 @@ GREEN = \033[1;32m
 YELLOW = \033[1;33m
 CYAN = \033[1;36m
 END = \033[0m
+
+# Messages
+COMP_CUB3D = "$(CYAN)---> Compiling Cub3D\n"
+COMP_MLX = "$(CYAN)---> Compiling MLX\n$(END)"
+COMP_COMPLETE = "$(GREEN) ---> Compilation complete\n"
 
 # Key Codes for MacOS
 ESC = ESC_KEY=53
@@ -140,6 +145,7 @@ RM := rm -rf
 all: $(NAME)
 
 obj: $(SRCS)
+	@printf $(COMP_CUB3D)
 	@mkdir -p $(OBJ_DIR)
 
 $(OBJ_DIR)%.o: $(SRC_DIR)%.c
@@ -149,13 +155,15 @@ $(OBJ_DIR)%.o: $(SRC_DIR)%.c
 $(OBJ_DIR)%.o: $(GNL_DIR)%.c
 	@$(CC) $(CFLAGS) -O3 -c $< -o $@ $(HEADER) -MMD
 
-$(NAME): echoCMMLX mlx $(LIBFT) echoCM obj $(OBJS) echoCOMP
+$(NAME): mlx $(LIBFT) obj $(OBJS)
+	@printf $(COMP_COMPLETE)
 	@$(CC) $(OBJS) $(LIBFT) -Lmlx_linux -lmlx_Linux -L/usr/lib -Imlx_linux -lXext -lX11 -lm -lz -o $(NAME)
 
 $(LIBFT): libft
 	@$(MAKE) -s -C ./libft
 
 mlx:
+	@printf $(COMP_MLX)
 	@$(MAKE) -s -C ./mlx_linux
 	@printf "$(GREEN) ---> MLX compilation complete\n"
 
@@ -164,7 +172,8 @@ libft: ;
 bonus: $(NAME_B)
 
 $(NAME_B): mlx $(LIBFT) obj $(OBJS_B)
-	$(CC) $(OBJS_B) $(LIBFT) -Lmlx_linux -lmlx_Linux -L/usr/lib -Imlx_linux -lXext -lX11 -lm -lz -o $(NAME_B)
+	@printf $(COMP_COMPLETE)
+	@$(CC) $(OBJS_B) $(LIBFT) -Lmlx_linux -lmlx_Linux -L/usr/lib -Imlx_linux -lXext -lX11 -lm -lz -o $(NAME_B)
 
 clean:
 	@printf "$(CYAN)---> Cleaning obj\n"
@@ -183,12 +192,3 @@ re: fclean all
 -include $(OBJS_D) $(OBJS_D_B)
 
 .PHONY: mlx libft all clean fclean re
-
-echoCM:
-	@printf "$(CYAN)---> Compiling Cub3D\n"
-
-echoCMMLX:
-	@printf "$(CYAN)---> Compiling MLX\n$(END)"
-
-echoCOMP:
-	@printf "$(GREEN) ---> Compilation complete\n"

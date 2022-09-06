@@ -1,3 +1,6 @@
+COMP_LIBFT = "$(CYAN)---> Compiling libft\n"
+COMP_COMPLETE = "$(GREEN) ---> Compilation complete\n"
+
 NAME = libft.a
 
 CC = gcc
@@ -63,13 +66,17 @@ OBJS_B_D = $(addprefix $(OBJS_DIR), $(addsuffix .d, $(FILES_B)))
 
 all: $(NAME)
 
+obj: $(SRCS)
+	@printf $(COMP_LIBFT)
+
 %.o: %.c
 	$(CC) $(CFLAGS) -c -o $@ $< -MMD
 	@printf "$(GREEN)█"
 
 bonus: $(NAME)
 
-$(NAME): echoCM $(OBJS) $(if $(findstring bonus, $(MAKECMDGOALS)), $(OBJS_B)) echoCOMP
+$(NAME): obj $(OBJS) $(if $(findstring bonus, $(MAKECMDGOALS)), $(OBJS_B))
+	@printf $(COMP_COMPLETE)
 	ar rcs $(NAME) $(OBJS) $(if $(findstring bonus, $(MAKECMDGOALS)), $(OBJS_B))
 
 clean:
@@ -83,12 +90,6 @@ re: fclean all
 -include $(OBJS_D) $(OBJS_B_D)
 
 .PHONY: all clean fclean re
-
-echoCM:
-	@echo "$(CYAN)---> Compiling libft"
-
-echoCOMP:
-	@echo "$(GREEN) ---> Compilation complete\n"
 
 RED = \033[1;31m
 GREEN = \033[1;32m

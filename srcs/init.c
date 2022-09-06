@@ -6,7 +6,7 @@
 /*   By: etobias <etobias@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 18:21:38 by etobias           #+#    #+#             */
-/*   Updated: 2022/09/05 23:36:19 by etobias          ###   ########.fr       */
+/*   Updated: 2022/09/07 01:32:36 by etobias          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,29 +15,7 @@
 static void	init_player(t_app *app);
 static void	set_player_rot(t_app *app, char side);
 static void	load_textures(t_app *app);
-
-void	put_sprites(t_app *app)
-{
-	size_t		x;
-	size_t		sprite_index;
-	t_sprites	*spr_data;
-
-	spr_data = &app->sprites_data;
-	spr_data->spr_count = 3;
-	spr_data->sprites = malloc(sizeof(t_sprite) * spr_data->spr_count);
-	if (!spr_data->sprites)
-		error_exit("MALLOC: sprites");
-	x = app->player.posX - 1;
-	x--;
-	sprite_index = 0;
-	while (sprite_index < spr_data->spr_count)
-	{
-		spr_data->sprites[sprite_index].x = (double)x - 0.5;
-		spr_data->sprites[sprite_index].y = (size_t)(app->player.posY + 1.0);
-		++sprite_index;
-		++x;
-	}
-}
+static void	put_sprites(t_app *app);
 
 void	init_app(t_app *app)
 {
@@ -61,6 +39,29 @@ void	init_app(t_app *app)
 	init_player(app);
 	load_textures(app);
 	put_sprites(app);
+}
+
+static void	put_sprites(t_app *app)
+{
+	size_t		x;
+	size_t		sprite_index;
+	t_sprites	*spr_data;
+
+	spr_data = &app->sprites_data;
+	spr_data->spr_count = 3;
+	spr_data->sprites = malloc(sizeof(t_sprite) * spr_data->spr_count);
+	if (!spr_data->sprites)
+		error_exit("MALLOC: sprites");
+	x = app->player.posX - 1;
+	x--;
+	sprite_index = 0;
+	while (sprite_index < spr_data->spr_count)
+	{
+		spr_data->sprites[sprite_index].x = (double)x - 0.5;
+		spr_data->sprites[sprite_index].y = (size_t)(app->player.posY + 1.0);
+		++sprite_index;
+		++x;
+	}
 }
 
 static void	init_player(t_app *app)

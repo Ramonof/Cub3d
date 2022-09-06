@@ -47,9 +47,10 @@ endif
 # Keycodes defined during compilation
 KEYCODES =  -D $(ESC) -D $(W) -D $(A) -D $(S) -D $(D) -D $(UP) -D $(DOWN) -D $(LEFT) -D $(RIGHT)
 
-MAP_SET = -DMAP_SET='" 01NSEW"'
+#MAP_SET = -DMAP_SET='" 01NSEW"'
 
 NAME := cub3D
+NAME_B := cub3D_bonus
 NAME_BONUS := cub3D_bonus
 LIBFT := libft/libft.a
 CC := gcc
@@ -80,14 +81,38 @@ SRC_FILES = main.c \
 			sprite_render_utils.c \
 			minimap_render.c
 
+SRC_FILES_B = main.c \
+			init.c \
+			init_utils.c \
+			utils.c \
+			render.c \
+			render_utils.c \
+			graphics_utils.c \
+			controls.c \
+			controls_utils.c \
+			errors.c \
+			parser.c \
+			parse_utils.c \
+			parse_utils_utils.c \
+			map_parser_bonus.c \
+			get_map.c \
+			check_map.c \
+			textures_utils.c \
+			free_memory.c \
+			sprite_render.c \
+			sprite_render_utils.c \
+			minimap_render.c
+
 GNL_FILES = get_next_line.c \
 			get_next_line_utils.c
 
 OBJ_FILES = $(SRC_FILES:.c=.o)
 OBJ_GNL_FILES = $(GNL_FILES:.c=.o)
+OBJ_FILES_B = $(SRC_FILES_B:.c=.o)
 
 OBJ_D_FILES = $(SRC_FILES:.c=.d)
 OBJ_D_GNL_FILES = $(GNL_FILES:.c=.d)
+OBJ_D_FILES_B = $(SRC_FILES_B:.c=.d)
 
 SRCS = 	$(addprefix $(SRC_DIR), $(SRC_FILES)) \
 		$(addprefix $(GNL_DIR), $(GNL_FILES))
@@ -96,6 +121,15 @@ OBJS = 	$(addprefix $(OBJ_DIR), $(OBJ_FILES)) \
 		$(addprefix $(OBJ_DIR), $(OBJ_GNL_FILES))
 
 OBJS_D = 	$(addprefix $(OBJ_DIR), $(OBJ_D_FILES)) \
+			$(addprefix $(OBJ_DIR), $(OBJ_D_GNL_FILES))
+
+SRCS_B = 	$(addprefix $(SRC_DIR), $(SRC_FILES_B)) \
+		$(addprefix $(GNL_DIR), $(GNL_FILES))
+
+OBJS_B = 	$(addprefix $(OBJ_DIR), $(OBJ_FILES_B)) \
+		$(addprefix $(OBJ_DIR), $(OBJ_GNL_FILES))
+
+OBJS_D_B = 	$(addprefix $(OBJ_DIR), $(OBJ_D_FILES_B)) \
 			$(addprefix $(OBJ_DIR), $(OBJ_D_GNL_FILES))
 
 HEADER := -I includes/
@@ -107,7 +141,7 @@ obj: $(SRCS)
 	@mkdir -p $(OBJ_DIR)
 
 $(OBJ_DIR)%.o: $(SRC_DIR)%.c
-	@$(CC) $(CFLAGS) $(KEYCODES) $(MAP_SET) -I/usr/include -Imlx_linux -O3 -c $< -o $@ $(HEADER) -MMD
+	@$(CC) $(CFLAGS) $(KEYCODES) -I/usr/include -Imlx_linux -O3 -c $< -o $@ $(HEADER) -MMD
 	@printf "$(GREEN)█"
 
 $(OBJ_DIR)%.o: $(GNL_DIR)%.c
@@ -125,11 +159,10 @@ mlx:
 
 libft: ;
 
-map:
-	@touch includes/cub3D.h
-	$(eval MAP_SET=-DMAP_SET='"D 01NSEW"')
+bonus: $(NAME_B)
 
-bonus: map $(NAME)
+$(NAME_B): mlx $(LIBFT) obj $(OBJS_B)
+	$(CC) $(OBJS_B) $(LIBFT) -Lmlx_linux -lmlx_Linux -L/usr/lib -Imlx_linux -lXext -lX11 -lm -lz -o $(NAME_B)
 
 clean:
 	@printf "$(CYAN)---> Cleaning obj\n"
@@ -139,12 +172,13 @@ clean:
 fclean: clean
 	@printf "$(CYAN)---> Cleaning executables and libraries\n"
 	@/bin/rm -f $(NAME)
+	@/bin/rm -f $(NAME_B)
 	@$(MAKE) fclean -s -C ./libft
 	@$(MAKE) clean -s -C ./mlx_linux
 
 re: fclean all
 
--include $(OBJS_D)
+-include $(OBJS_D) $(OBJS_D_B)
 
 .PHONY: mlx libft all clean fclean re
 

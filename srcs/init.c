@@ -6,7 +6,7 @@
 /*   By: etobias <etobias@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 18:21:38 by etobias           #+#    #+#             */
-/*   Updated: 2022/08/25 14:53:43 by etobias          ###   ########.fr       */
+/*   Updated: 2022/09/05 23:36:19 by etobias          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,27 @@
 static void	init_player(t_app *app);
 static void	set_player_rot(t_app *app, char side);
 static void	load_textures(t_app *app);
+
+void	put_sprites(t_app *app)
+{
+	size_t		x;
+	size_t		sprite_index;
+	t_sprites	*spr_data;
+
+	spr_data = &app->sprites_data;
+	spr_data->spr_count = 3;
+	spr_data->sprites = malloc(sizeof(t_sprite) * spr_data->spr_count);
+	x = app->player.posX - 1;
+	x--;
+	sprite_index = 0;
+	while (sprite_index < spr_data->spr_count)
+	{
+		spr_data->sprites[sprite_index].x = (double)x - 0.5;
+		spr_data->sprites[sprite_index].y = (size_t)(app->player.posY + 1.0);
+		++sprite_index;
+		++x;
+	}
+}
 
 void	init_app(t_app *app)
 {
@@ -27,14 +48,11 @@ void	init_app(t_app *app)
 	app->prev_mouse_x = -1;
 	app->map = app->textures->map;
 	app->update = true;
+	app->minimap.radius = 10;
+	app->minimap.scale = 12;
 	init_player(app);
 	load_textures(app);
-	app->sprite_count = 2;
-	app->sprites = malloc(sizeof(t_sprite) * app->sprite_count);
-	app->sprites[0].x = 15.0;
-	app->sprites[0].y = 5.0;
-	app->sprites[1].x = 14.0;
-	app->sprites[1].y = 5.0;
+	put_sprites(app);
 }
 
 static void	init_player(t_app *app)
@@ -97,14 +115,13 @@ static void	load_textures(t_app *app)
 
 	textures = app->textures;
 	size = textures->size;
-	textures->n_image = mlx_xpm_file_to_image(app->mlx, textures->no, &size, &size);
-	textures->n_texture = mlx_get_data_addr(textures->n_image, &size, &size, &size);
-	textures->s_image = mlx_xpm_file_to_image(app->mlx, textures->so, &size, &size);
-	textures->s_texture = mlx_get_data_addr(textures->s_image, &size, &size, &size);
-	textures->e_image = mlx_xpm_file_to_image(app->mlx, textures->ea, &size, &size);
-	textures->e_texture = mlx_get_data_addr(textures->e_image, &size, &size, &size);
-	textures->w_image = mlx_xpm_file_to_image(app->mlx, textures->we, &size, &size);
-	textures->w_texture = mlx_get_data_addr(textures->w_image, &size, &size, &size);
-	textures->sprite_image = mlx_xpm_file_to_image(app->mlx, "textures/pillar.xpm", &size, &size);
-	textures->sprite_texture = mlx_get_data_addr(textures->sprite_image, &size, &size, &size);
+	load_wall_textures(app);
+	textures->sprite_image = mlx_xpm_file_to_image(app->mlx,
+			SPRITE_PATH, &size, &size);
+	textures->sprite_texture = mlx_get_data_addr(textures->sprite_image,
+			&size, &size, &size);
+	textures->door_image = mlx_xpm_file_to_image(app->mlx,
+			DOOR_PATH, &size, &size);
+	textures->door_texture = mlx_get_data_addr(textures->door_image,
+			&size, &size, &size);
 }

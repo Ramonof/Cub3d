@@ -25,6 +25,8 @@ void	put_sprites(t_app *app)
 	spr_data = &app->sprites_data;
 	spr_data->spr_count = 3;
 	spr_data->sprites = malloc(sizeof(t_sprite) * spr_data->spr_count);
+	if (!spr_data->sprites)
+		error_exit("MALLOC: sprites");
 	x = app->player.posX - 1;
 	x--;
 	sprite_index = 0;
@@ -43,7 +45,11 @@ void	init_app(t_app *app)
 	if (!app->mlx)
 		error_exit("MLX: failed to initiate");
 	app->mlx_win = mlx_new_window(app->mlx, WIDTH, HEIGHT, "Cub3D");
+	if (!app->mlx_win)
+		error_exit("MLX: failed new window");
 	app->img.img = mlx_new_image(app->mlx, WIDTH, HEIGHT);
+	if (!app->mlx_win)
+		error_exit("MLX: failed new image");
 	app->img.addr = mlx_get_data_addr(app->img.img, &app->img.bits_per_pixel,
 			&app->img.line_length,
 			&app->img.endian);
@@ -120,10 +126,14 @@ static void	load_textures(t_app *app)
 	load_wall_textures(app);
 	textures->sprite_image = mlx_xpm_file_to_image(app->mlx,
 			SPRITE_PATH, &size, &size);
+	if (!textures->sprite_image)
+		error_exit("MLX: Bad sprite");
 	textures->sprite_texture = mlx_get_data_addr(textures->sprite_image,
 			&size, &size, &size);
 	textures->door_image = mlx_xpm_file_to_image(app->mlx,
 			DOOR_PATH, &size, &size);
+	if (!textures->door_image)
+		error_exit("MLX: Bad door");
 	textures->door_texture = mlx_get_data_addr(textures->door_image,
 			&size, &size, &size);
 }

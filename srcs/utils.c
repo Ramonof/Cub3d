@@ -25,7 +25,7 @@ int	close_app(t_app *app)
 {
 	mlx_destroy_window(app->mlx, app->mlx_win);
 	free_memory(app);
-	exit(1);
+	exit(1); // 1 - выход с ошибкой, 0 - выход без
 }
 
 double	map(double old_min, double old_max, double new_min, double new_max, double value)

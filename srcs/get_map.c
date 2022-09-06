@@ -71,6 +71,8 @@ void	get_map(t_textures *textures, int iter, int fd, char *line)
 	int	code;
 	int	cur_iter;
 
+	if (fd < 0)
+		errno_exit("Map file");
 	code = 1;
 	cur_iter = 0;
 	while (code == 1)

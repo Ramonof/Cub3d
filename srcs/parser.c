@@ -109,6 +109,8 @@ void	start_parse(char *map_name, t_textures *textures)
 	while (code == 1)
 	{
 		code = get_next_line(fd, &line, 0);
+		if (code < 0)
+			error_exit("Bad file");
 		info_type(line, textures, &code);
 		iter++;
 		if (code == 2)

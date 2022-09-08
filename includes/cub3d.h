@@ -28,10 +28,6 @@
 # include <stdbool.h>
 # include <limits.h>
 
-# define ARROW_LEFT 65361
-# define ARROW_RIGHT 65363
-# define E_KEY 101
-
 # define WIDTH 1280
 # define HEIGHT 720
 

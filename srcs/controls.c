@@ -40,9 +40,9 @@ static void	movement(t_app *app, int keycode)
 
 static void	key_rotation(t_app *app, int keycode)
 {
-	if (keycode == KEY_LEFT)
+	if (keycode == ARROW_LEFT)
 		rotate_camera(app, -1);
-	else if (keycode == KEY_RIGHT)
+	else if (keycode == ARROW_RIGHT)
 		rotate_camera(app, 1);
 }
 

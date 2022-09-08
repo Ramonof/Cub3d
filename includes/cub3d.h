@@ -17,15 +17,19 @@
 # include <fcntl.h>
 # include "get_next_line.h"
 # include "../libft/libft.h"
-# include <mlx.h>
+# if defined(__APPLE__)
+	# include <mlx.h>
+# elif __linux__
+	# include <mlx.h>
+# endif
 # include <math.h>
 # include <stdio.h>
 # include <errno.h>
 # include <stdbool.h>
 # include <limits.h>
 
-# define KEY_LEFT 65361
-# define KEY_RIGHT 65363
+# define ARROW_LEFT 65361
+# define ARROW_RIGHT 65363
 # define E_KEY 101
 
 # define WIDTH 1280

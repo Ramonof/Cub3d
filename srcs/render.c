@@ -105,12 +105,12 @@ static void	draw_ceil_floor(t_app *app, t_ray *ray)
 
 	screen_y = 0;
 	color = app->textures->c;
-	c = create_argb(255, color.r, color.g, color.b);
+	c = create_argb(0, color.r, color.g, color.b);
 	while (screen_y < ray->draw_start)
 		my_mlx_pixel_put(&app->img, ray->screen_x, screen_y++, c);
 	screen_y = ray->draw_end + 1;
 	color = app->textures->f;
-	c = create_argb(255, color.r, color.g, color.b);
+	c = create_argb(0, color.r, color.g, color.b);
 	while (screen_y < HEIGHT)
 		my_mlx_pixel_put(&app->img, ray->screen_x, screen_y++, c);
 }

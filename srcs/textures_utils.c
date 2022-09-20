@@ -12,37 +12,6 @@
 
 #include "cub3d.h"
 
-/* Not needed in final version */
-void	print_textures_data(t_textures *textures)
-{
-	int	i;
-	int	j;
-
-	i = 0;
-	ft_putstr_fd("NO ", 1);
-	ft_putendl_fd(textures->no, 1);
-	ft_putstr_fd("SO ", 1);
-	ft_putendl_fd(textures->so, 1);
-	ft_putstr_fd("WE ", 1);
-	ft_putendl_fd(textures->we, 1);
-	ft_putstr_fd("EA ", 1);
-	ft_putendl_fd(textures->ea, 1);
-	printf("F %d,%d,%d\n", textures->f.r, textures->f.g, textures->f.b);
-	printf("C %d,%d,%d\n", textures->c.r, textures->c.g, textures->c.b);
-	printf("w %d h %d\n", textures->map_w, textures->map_h);
-	while (i < textures->map_h)
-	{
-		j = 0;
-		while (j < textures->map_w)
-		{
-			printf("%c", textures->map[i][j]);
-			j++;
-		}
-		printf("\n");
-		i++;
-	}
-}
-
 void	free_textures_data(t_textures *textures)
 {
 	int	i;

@@ -32,6 +32,9 @@ UP = KEY_UP=126
 DOWN = KEY_DOWN=125
 LEFT = KEY_LEFT=123
 RIGHT = KEY_RIGHT=124
+E = E_KEY=14
+AR_LEFT = ARROW_LEFT=123
+AR_RIGHT = ARROW_RIGHT=124
 
 SHELL=/bin/bash
 UNAME = $(shell uname -s)
@@ -47,10 +50,14 @@ ifeq ($(UNAME), Linux)
 	DOWN = KEY_DOWN=65364
 	LEFT = KEY_LEFT=65361
 	RIGHT = KEY_RIGHT=65363
+	E = E_KEY=101
+	AR_LEFT = ARROW_LEFT=65361
+	AR_RIGHT = ARROW_RIGHT=65363
 endif
 
 # Keycodes defined during compilation
-KEYCODES =  -D $(ESC) -D $(W) -D $(A) -D $(S) -D $(D) -D $(UP) -D $(DOWN) -D $(LEFT) -D $(RIGHT)
+KEYCODES =  -D $(ESC) -D $(W) -D $(A) -D $(S) -D $(D) -D $(UP) -D $(DOWN) \
+			-D $(LEFT) -D $(RIGHT) -D $(E) -D $(AR_LEFT) -D $(AR_RIGHT)
 
 #MAP_SET = -DMAP_SET='" 01NSEW"'
 

@@ -93,28 +93,28 @@ static void	set_player_rot(t_app *app, char side)
 {
 	if (side == 'N')
 	{
-		app->player.dirX = 0;
-		app->player.dirY = -1;
+		app->player.dirx = 0;
+		app->player.diry = -1;
 	}
 	else if (side == 'S')
 	{
-		app->player.dirX = 0;
-		app->player.dirY = 1;
+		app->player.dirx = 0;
+		app->player.diry = 1;
 	}
 	else if (side == 'E')
 	{
-		app->player.dirX = 1;
-		app->player.dirY = 0;
+		app->player.dirx = 1;
+		app->player.diry = 0;
 	}
 	else if (side == 'W')
 	{
-		app->player.dirX = -1;
-		app->player.dirY = 0;
+		app->player.dirx = -1;
+		app->player.diry = 0;
 	}
-	app->player.planeX = (-1 + 2 * (side == 'E' || side == 'W'))
-		* app->player.dirY * 0.66;
-	app->player.planeY = (-1 + 2 * (side == 'E' || side == 'W'))
-		* app->player.dirX * 0.66;
+	app->player.planex = (-1 + 2 * (side == 'E' || side == 'W'))
+		* app->player.diry * 0.66;
+	app->player.planey = (-1 + 2 * (side == 'E' || side == 'W'))
+		* app->player.dirx * 0.66;
 }
 
 static void	load_textures(t_app *app)

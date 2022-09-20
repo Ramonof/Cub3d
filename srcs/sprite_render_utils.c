@@ -41,11 +41,11 @@ void	calc_sprite_data(t_player *player, t_sprites *spr_data, size_t i)
 
 	sprite_x = spr_data->sprites[spr_data->spr_order[i]].x - player->pos_x;
 	sprite_y = spr_data->sprites[spr_data->spr_order[i]].y - player->pos_y;
-	inv_det = 1.0 / (player->planeX * player->dirY
-			- player->planeY * player->dirX);
-	transform_x = inv_det * (player->dirY * sprite_x - player->dirX * sprite_y);
-	spr_data->transform_y = inv_det * (-player->planeY
-			* sprite_x + player->planeX * sprite_y);
+	inv_det = 1.0 / (player->planex * player->diry
+			- player->planey * player->dirx);
+	transform_x = inv_det * (player->diry * sprite_x - player->dirx * sprite_y);
+	spr_data->transform_y = inv_det * (-player->planey
+			* sprite_x + player->planex * sprite_y);
 	spr_data->spr_screen_x = (int)((WIDTH / 2)
 			* (1 + transform_x / spr_data->transform_y));
 	spr_data->sprite_height = abs((int)(HEIGHT / spr_data->transform_y));

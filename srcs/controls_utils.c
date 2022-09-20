@@ -17,8 +17,8 @@ void	door_interaction(t_app *app)
 	int	map_x;
 	int	map_y;
 
-	map_x = (int)(app->player.pos_x + app->player.dirX);
-	map_y = (int)(app->player.pos_y + app->player.dirY);
+	map_x = (int)(app->player.pos_x + app->player.dirx);
+	map_y = (int)(app->player.pos_y + app->player.diry);
 	if (app->map[map_y][map_x] == CH_CLOSED_DOOR)
 	{
 		app->map[map_y][map_x] = CH_OPEN_DOOR;
@@ -61,11 +61,11 @@ void	rotate_camera(t_app *app, int direction)
 
 	rotation = ROT_SPEED * direction;
 	p = &app->player;
-	temp_x = p->dirX;
-	p->dirX = p->dirX * cos(rotation) - p->dirY * sin(rotation);
-	p->dirY = temp_x * sin(rotation) + p->dirY * cos(rotation);
-	temp_x = p->planeX;
-	p->planeX = p->planeX * cos(rotation) - p->planeY * sin(rotation);
-	p->planeY = temp_x * sin(rotation) + p->planeY * cos(rotation);
+	temp_x = p->dirx;
+	p->dirx = p->dirx * cos(rotation) - p->diry * sin(rotation);
+	p->diry = temp_x * sin(rotation) + p->diry * cos(rotation);
+	temp_x = p->planex;
+	p->planex = p->planex * cos(rotation) - p->planey * sin(rotation);
+	p->planey = temp_x * sin(rotation) + p->planey * cos(rotation);
 	app->update = true;
 }

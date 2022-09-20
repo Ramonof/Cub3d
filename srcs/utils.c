@@ -25,5 +25,5 @@ int	close_app(t_app *app)
 {
 	mlx_destroy_window(app->mlx, app->mlx_win);
 	free_memory(app);
-	exit(1); // 1 - выход с ошибкой, 0 - выход без
+	exit(0);
 }

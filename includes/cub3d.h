@@ -11,16 +11,15 @@
 /* ************************************************************************** */
 
 #ifndef CUB3D_H
-
 # define CUB3D_H
 
 # include <fcntl.h>
 # include "get_next_line.h"
 # include "../libft/libft.h"
 # if defined(__APPLE__)
-	# include <mlx.h>
+#  include <mlx.h>
 # elif __linux__
-	# include <mlx.h>
+#  include <mlx.h>
 # endif
 # include <math.h>
 # include <stdio.h>
@@ -45,7 +44,7 @@
 # define CH_CLOSED_DOOR 'D'
 # define CH_OPEN_DOOR 'C'
 
-typedef struct	s_data {
+typedef struct s_data {
 	void	*img;
 	char	*addr;
 	int		bits_per_pixel;
@@ -53,7 +52,7 @@ typedef struct	s_data {
 	int		endian;
 }	t_data;
 
-typedef struct	s_color {
+typedef struct s_color {
 	int	r;
 	int	g;
 	int	b;
@@ -65,25 +64,25 @@ typedef struct s_sprite
 	double	y;
 }	t_sprite;
 
-typedef struct	s_textures {
-	char	*no;			// walls' texture directories
+typedef struct s_textures {
+	char	*no;
 	char	*so;
 	char	*ea;
 	char	*we;
-	int		size;			// textures' size
-	void	*n_image;		// walls' texture images
+	int		size;
+	void	*n_image;
 	void	*s_image;
 	void	*e_image;
 	void	*w_image;
-	char	*n_texture;		// walls' texture data
+	char	*n_texture;
 	char	*s_texture;
 	char	*e_texture;
 	char	*w_texture;
-	t_color	f;				// floor color
-	t_color	c;				// ceiling color
-	char	**map;			// map data
-	int		map_w;			// map width
-	int		map_h;			// map height
+	t_color	f;
+	t_color	c;
+	char	**map;
+	int		map_w;
+	int		map_h;
 	void	*sprite_image;
 	char	*sprite_texture;
 	void	*door_image;
@@ -92,15 +91,15 @@ typedef struct	s_textures {
 
 typedef struct s_player
 {
-	double	pos_x;	// X position
-	double	pos_y;	// Y position
-	double	dirX;	// X look direction
-	double	dirY;	// Y look direction
-	double	planeX; // X camera plane direction
-	double	planeY; // Y camera plane direction
+	double	pos_x;
+	double	pos_y;
+	double	dirx;
+	double	diry;
+	double	planex;
+	double	planey;
 }	t_player;
 
-typedef struct	s_minimap
+typedef struct s_minimap
 {
 	int	min_x;
 	int	min_y;
@@ -130,18 +129,17 @@ typedef struct s_sprites
 	int			stripe;
 }	t_sprites;
 
-
 typedef struct s_app
 {
-	void		*mlx;			// mlx
-	void		*mlx_win;		// mlx window
-	t_data		img;			// image data
-	t_player	player;			// player data
-	char		**map;			// level map
+	void		*mlx;
+	void		*mlx_win;
+	t_data		img;
+	t_player	player;
+	char		**map;
 	t_sprites	sprites_data;
-	int			prev_mouse_x;	// prev mouse X position
+	int			prev_mouse_x;
 	t_textures	*textures;
-	bool		update;			// flag to update the screen image
+	bool		update;
 	double		z_buffer[WIDTH];
 	t_minimap	minimap;
 }	t_app;
@@ -149,9 +147,9 @@ typedef struct s_app
 typedef struct s_ray
 {
 	int		screen_x;
-	double 	camera_x;
-	double 	ray_dir_x;
-	double 	ray_dir_y;
+	double	camera_x;
+	double	ray_dir_x;
+	double	ray_dir_y;
 	int		draw_start;
 	int		draw_end;
 	int		map_x;
@@ -178,10 +176,10 @@ int		create_argb(int a, int r, int g, int b);
 
 /* controls.c */
 int		keyboard_input(int keycode, t_app *app);
-int 	mouse_move(int x, int y, t_app *app);
+int		mouse_move(int x, int y, t_app *app);
 
 /* utils.c */
-double  fclamp(double value, double min, double max);
+double	fclamp(double value, double min, double max);
 int		close_app(t_app *app);
 
 /* errors.c*/
@@ -189,7 +187,6 @@ void	error_exit(char *err);
 void	errno_exit(char *err);
 
 /* textures_utils.c */
-void	print_textures_data(t_textures *textures);
 void	free_textures_data(t_textures *textures);
 void	init_textures(t_textures *textures);
 int		get_text_x(t_app *app, t_ray *ray, int side, double wall_dist);
@@ -203,7 +200,7 @@ int		get_map_info(int fd, t_textures *textures, char *line, int *code);
 int		in_set(char c, const char *set);
 
 /* get_map.c */
-void    get_map(t_textures *textures, int iter, int fd, char *line);
+void	get_map(t_textures *textures, int iter, int fd, char *line);
 
 /* check_map.c */
 void	check_map(t_textures *textures);
@@ -222,7 +219,7 @@ int		fill_r(t_color *info, char *line, int nbr);
 
 /* render_utils.c */
 double	get_wall_dist(t_ray *ray, int side);
-char    *get_texture(t_app *app, t_ray *ray, int side);
+char	*get_texture(t_app *app, t_ray *ray, int side);
 int		cast_ray(t_app *app, t_ray *ray);
 void	calc_ray_side_dist(t_player *player, t_ray *ray);
 
@@ -230,23 +227,23 @@ void	calc_ray_side_dist(t_player *player, t_ray *ray);
 void	free_memory(t_app *app);
 
 /* sprite_render.c */
-void    draw_sprites(t_app *app);
+void	draw_sprites(t_app *app);
 
 /* sprite_render_utils.c */
 void	sort_sprites(t_sprites *spr_data);
 void	calc_sprite_data(t_player *player, t_sprites *sprites_data, size_t i);
-void    calc_sprite_borders(t_sprites *sprites_data);
+void	calc_sprite_borders(t_sprites *sprites_data);
 
 /* minimap_render.c */
 void	draw_minimap(t_app *app);
 
 /* controls_utils.c */
-void    door_interaction(t_app *app);
+void	door_interaction(t_app *app);
 void	move_player(t_app *app, double x_dir, double y_dir);
 void	rotate_camera(t_app *app, int direction);
 
 /* init_utils.c */
-void    load_wall_textures(t_app *app);
+void	load_wall_textures(t_app *app);
 
 /* minimap_render_utils.c */
 void	calc_x_range(t_app *app);

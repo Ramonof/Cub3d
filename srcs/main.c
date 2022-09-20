@@ -48,7 +48,6 @@ int	main(int argc, char **argv)
 		error_exit("Bad arguments");
 	init_textures(&textures);
 	start_parse(argv[1], &textures);
-	print_textures_data(&textures);
 	app.textures = &textures;
 	app.textures->size = 64;
 	start_game(&app);

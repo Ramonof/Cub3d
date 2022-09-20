@@ -40,8 +40,8 @@ static void	init_ray(t_player *player, t_ray *ray, int screen_x)
 
 	ray->screen_x = screen_x;
 	camera_x = 2 * ray->screen_x / (double)WIDTH - 1;
-	ray->ray_dir_x = player->dirX + player->planeX * camera_x;
-	ray->ray_dir_y = player->dirY + player->planeY * camera_x;
+	ray->ray_dir_x = player->dirx + player->planex * camera_x;
+	ray->ray_dir_y = player->diry + player->planey * camera_x;
 	ray->map_x = (int)player->pos_x;
 	ray->map_y = (int)player->pos_y;
 	if (ray->ray_dir_x == 0)

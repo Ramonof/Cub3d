@@ -29,13 +29,13 @@ int	keyboard_input(int keycode, t_app *app)
 static void	movement(t_app *app, int keycode)
 {
 	if (keycode == D_KEY)
-		move_player(app, app->player.planeX, app->player.planeY);
+		move_player(app, app->player.planex, app->player.planey);
 	else if (keycode == A_KEY)
-		move_player(app, -app->player.planeX, -app->player.planeY);
+		move_player(app, -app->player.planex, -app->player.planey);
 	else if (keycode == W_KEY)
-		move_player(app, app->player.dirX, app->player.dirY);
+		move_player(app, app->player.dirx, app->player.diry);
 	else if (keycode == S_KEY)
-		move_player(app, -app->player.dirX, -app->player.dirY);
+		move_player(app, -app->player.dirx, -app->player.diry);
 }
 
 static void	key_rotation(t_app *app, int keycode)

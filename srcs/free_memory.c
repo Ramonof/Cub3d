@@ -23,6 +23,6 @@ void	free_memory(t_app *app)
 	free(app->sprites_data.sprites);
 	free_textures_data(app->textures);
 	mlx_destroy_image(app->mlx, app->img.img);
-	//mlx_destroy_display(app->mlx); //remove on macos
+	mlx_destroy_display(app->mlx); //remove on macos
 	free(app->mlx);
 }
